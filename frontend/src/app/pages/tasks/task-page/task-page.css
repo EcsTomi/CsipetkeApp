@@ -1,0 +1,113 @@
+.notActive {
+    opacity: 0.9;
+    background-color: #fcfcfc;
+}
+.criteria h2 {
+    width: max-content;
+    max-width: calc(100% - 100px);
+    display: inline-block;
+    margin-top: 0rem;
+    margin-bottom: 0.3rem;
+}
+.criteria .points {
+    float: right;
+    margin-right: 10px;
+}
+.criteria button {
+    float: right;
+    border: none;
+    background-color: transparent;
+    padding: 0.3rem 0.3rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.criteriaHeader {
+    display: block;
+    width: 100%;
+}
+section:has(.class-card.smaller) {
+    gap: 0.5rem;
+}
+.class-card.smaller {
+    aspect-ratio: unset;
+    width: calc(25% - 3rem) !important;
+    min-width: 100px;
+}
+@media (max-width: 730px) {
+    .class-card.smaller {
+        width: 100% !important;
+    }
+}
+.class-card.smaller {
+    text-align: center;
+}
+.class-card.smaller span mat-icon {
+    margin-bottom: -5px;
+}
+.noClick {
+    cursor: auto;
+}
+.smaller button {
+    cursor: pointer;
+    margin: auto;
+    border: none;
+    background-color: white;
+    padding: 0.3rem 0.3rem;
+    width: 100px;
+    height: 40px;
+    border-radius: 0.6rem;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+@media (min-width: 730px) {
+    .smaller button {
+        width: 100%;
+    }
+}
+.smaller button:hover {
+    box-shadow: rgba(0, 0, 0, 0.9) 0px 4px 12px;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+.smaller button mat-icon {
+    margin-bottom: -5px;
+}
+
+.progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin: auto;
+}
+
+.progress-wrap mat-icon.spin {
+    color: var(--csipetke-primary);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.progress-wrap span {
+    font-size: 0.85rem;
+    color: #666;
+    min-width: 2.5rem;
+    text-align: right;
+}
+.settingsHeader h2 {
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    margin-left: -80px;
+    width: 100%;
+    display: flex;
+    gap: 0.1rem;
+    flex-wrap: wrap;
+}

@@ -1,0 +1,104 @@
+@if (isLoading()) {
+    <p class="hint">Betöltés...</p>
+}
+@if (items().length === 0) {
+    <p class="hint">Nincs pontozható produkció.</p>
+} @else {
+
+    @if ((canJury() || canOrganizerScore()) && !juryScoreStore.windowIsOpen()) {
+        <div class="window-notice">
+            <mat-icon class="material-symbols-rounded">lock_clock</mat-icon>
+            A zsűrizési időablak jelenleg zárva van.
+        </div>
+    }
+
+    <div class="score-scroll">
+        @for (item of items(); track item.id) {
+            @if (item.task === null) {
+                <div class="score-card break-card" [id]="`item-${item.id}`">
+                    <mat-icon class="material-symbols-rounded">schedule</mat-icon>
+                    <span class="item-name">{{ item.custom_label }}</span>
+                </div>
+            } @else {
+                <div class="score-card" [id]="`item-${item.id}`">
+                    <div class="card-header">
+                        <span class="item-name">
+                            {{ item.task.name }}
+                            @if (item.class_letter) {
+                                <span [classList]="'class-tag class' + item.class_letter.toUpperCase()">{{ item.class_letter.toUpperCase() }}</span>
+                            }
+                        </span>
+                    </div>
+
+                    @if (item.task.scoring_type === 'jury') {
+                        @if (!canJury()) {
+                            <div class="disabled-row">
+                                <mat-icon class="material-symbols-rounded">block</mat-icon>
+                                Csak zsűritagok pontozhatják
+                            </div>
+                        } @else {
+                            <div class="jury-scoring">
+                                @if (useSlider(item)) {
+                                    <span class="slider-value">{{ myScore(item) ?? '—' }} / {{ item.task.max_points }}</span>
+                                    <input
+                                        type="range"
+                                        [min]="0"
+                                        [max]="item.task.max_points"
+                                        [value]="myScore(item) ?? 0"
+                                        [classList]="'class-' + item.class_letter?.toUpperCase() + (isSliderActive(item) ? ' active' : '')"
+                                        [style]="sliderStyle(item)"
+                                        [disabled]="!juryScoreStore.windowIsOpen()"
+                                        (pointerdown)="onSliderPointerDown(item, $event)"
+                                        (pointerup)="onSliderPointerUp(item, $event)"
+                                        (blur)="onSliderBlur(item)"
+                                        (change)="onSliderChange(item, $event)"
+                                        (input)="onSliderInput(item, $event)"
+                                    >
+                                    @if (!isSliderActive(item)) {
+                                        <span class="slider-hint">Érintsd meg az aktiváláshoz</span>
+                                    }
+                                } @else {
+                                    <div class="score-buttons">
+                                        @for (n of pointRange(item); track n) {
+                                            <button
+                                                type="button"
+                                                [classList]="'class' + item.class_letter?.toUpperCase() + (myScore(item) === n ? ' selected' : '')"
+                                                [disabled]="!juryScoreStore.windowIsOpen()"
+                                                (click)="setJuryScore(item, n)"
+                                            >{{ (n>0) ? n : '—' }}</button>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        }
+                    } @else if (item.task.scoring_type === 'organizer') {
+                        @if (!canOrganizerScore()) {
+                            <div class="disabled-row">
+                                <mat-icon class="material-symbols-rounded">block</mat-icon>
+                                Csak szervezők pontozhatják
+                            </div>
+                        } @else {
+                            <div class="organizer-scoring">
+                                @for (letter of classLetters; track letter) {
+                                    <div class="class-select">
+                                        <label>{{ letter.toUpperCase() }}</label>
+                                        <select
+                                            [ngModel]="getDraftPlacement(item.id, letter)"
+                                            (ngModelChange)="setDraftPlacement(item, letter, $event)"
+                                            [disabled]="!juryScoreStore.windowIsOpen()"
+                                        >
+                                            <option value="">—</option>
+                                            @for (p of placementOptions(item); track p) {
+                                                <option [value]="p">{{ p }}. hely</option>
+                                            }
+                                        </select>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    }
+                </div>
+            }
+        }
+    </div>
+}

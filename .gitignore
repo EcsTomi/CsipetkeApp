@@ -1,0 +1,7 @@
+.DS_Store
+backend/.env
+**/.env
+**/.env.*
+!**/.env.example
+test_tokens.json
+tests/k6/tokens.json

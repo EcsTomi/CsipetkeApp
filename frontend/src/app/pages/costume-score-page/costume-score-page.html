@@ -1,0 +1,115 @@
+<!-- costume-score-page.html -->
+@if (showPanel()) {
+    <costume-score-panel
+        [editId]="editingId()"
+        (closed)="closePanel()"
+    ></costume-score-panel>
+}
+
+<section class="full">
+    <div class="settingsHeader">
+        <p>Jelmez pontozás</p>
+        @if (auth.isPermitted('costume.score')) {
+            <button type="button" mat-icon-button (click)="openCreate()">
+                <mat-icon aria-hidden="true" class="material-symbols-rounded">diversity_3</mat-icon>
+            </button>
+        }
+    </div>
+    @if(safetyCheck() == 3) {
+        <div class="totals-row">
+            @for (letter of classes; track letter) {
+                <div [classList]="'total-card class' + letter.toUpperCase()">
+                    <span class="total-letter">{{ letter.toUpperCase() }}</span>
+                    <span class="total-value">{{ totals()[letter] }}</span>
+                </div>
+            }
+            <button type="button" class="hide" mat-stroked-button (click)="hideSums()">Elrejtés</button>
+        </div>
+    } @else {
+        <div class="totals-row">
+            @for (letter of classes; track letter) {
+                <div [classList]="'total-card safetyhidden class' + letter.toUpperCase()">
+                    <span class="total-letter">{{ letter.toUpperCase() }}</span>
+                    <span class="total-value">###</span>
+                </div>
+            }
+            <div class="overlay">
+                <h3>Adatvédelmi okok miatt rejtve.</h3>
+                @if(auth.isPermitted("costume.total")) {
+                    <button type="button" mat-stroked-button [disabled]="safetyCheck() == 2" (click)="showSums(2)">Megtekintés</button>
+                    @if(safetyCheck() == 2) {
+                        <button type="button" mat-stroked-button (click)="showSums(3)">Biztosan?</button>
+                    }
+                }
+            </div>
+        </div>
+    }
+
+
+    @if (isLoading()) {
+        <p class="hint">Betöltés...</p>
+    } @else if (items().length === 0) {
+        <p class="hint">Még nincs rögzített jelmezpontozás.</p>
+    } @else {
+        <div class="score-list">
+            @for (entry of items(); track entry.id) {
+                <div class="score-entry" [class.removed]="entry.is_removed">
+                    <div class="score-header">
+                        <h2 [classList]="'score-class class' + entry.class_letter.toUpperCase()">{{ entry.class_letter.toUpperCase() }}</h2>
+                        <span class="score-sum" [class.negative]="entry.calculatedSum < 0">
+                            @if(entry.calculatedSum == 0 && !auth.isPermitted("costume.total")) {
+                                <mat-icon class="material-symbols-rounded">lock</mat-icon>
+                            } @else {
+                                {{ entry.calculatedSum >= 0 ? '+' : '' }}{{ entry.calculatedSum }} pont
+                            }
+                        </span>
+                        @if (entry.is_removed) {
+                            <span class="removed-tag">Visszavonva</span>
+                        }
+                        <span class="score-date">{{ entry.created_at | date:'yyyy. MM. dd. HH:mm' }}</span>
+                    </div>
+                    <p class="score-breakdown">{{ breakdown(entry) }}</p>
+                    @if (entry.note) {
+                        <p class="score-note">{{ entry.note }}</p>
+                    }
+                    @if (entry.created_by) {
+                        <p class="score-author">Rögzítette: {{ entry.created_by.name }}</p>
+                    }
+                    @if (entry.modified_by) {
+                        <p class="score-author">Utoljára szerkesztette: {{ entry.modified_by.name }} ({{ entry.modified_at | date:'yyyy. MM. dd. HH:mm' }})</p>
+                    }
+                    @if (entry.is_removed) {
+                        <p class="score-remove-details">Visszavonás: {{ entry.remove_details }} - {{ entry.removed_by!.name }} ({{ entry.removed_at | date:'yyyy. MM. dd. HH:mm' }})</p>
+                    }
+
+                    @if (!entry.is_removed && canModify(entry)) {
+                        @if (removingId() === entry.id) {
+                            <div class="remove-confirm">
+                                <input
+                                    type="text"
+                                    placeholder="Visszavonás oka (opcionális)"
+                                    [ngModel]="removeNote()"
+                                    (ngModelChange)="removeNote.set($event)"
+                                    name="removeNote-{{ entry.id }}"
+                                >
+                                <button class="cancel" (click)="cancelRemove()">Mégse</button>
+                                <button class="confirm" (click)="doRemove(entry)">Visszavonás</button>
+                            </div>
+                        } @else {
+                            <div class="score-actions">
+                                <button class="edit-btn" (click)="openEdit(entry)">
+                                    <mat-icon class="material-symbols-rounded">edit</mat-icon>
+                                    Szerkesztés
+                                </button>
+                                <button class="remove-btn" (click)="confirmRemove(entry)">
+                                    <mat-icon class="material-symbols-rounded">delete</mat-icon>
+                                    Visszavonás
+                                </button>
+                            </div>
+                        }
+                    }
+                </div>
+            }
+        </div>
+    }
+</section>

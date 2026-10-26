@@ -1,0 +1,133 @@
+.group div {
+    width: calc(100% - 0.8rem);
+}
+.noClick {
+    cursor: auto;
+}
+.vote-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 0.8rem;
+    margin-left: -1rem;
+    max-width: none;
+    width: calc(100% + 0.4rem);
+    margin-top: 0.6rem;
+    border-radius: 0;
+}
+.vote-status.closed {
+    background: rgba(150, 0, 0, 0.08);
+    color: #a33;
+}
+.vote-status.open {
+    background: rgba(0, 120, 0, 0.08);
+    color: #1a6b1a;
+}
+img, .img_place {
+    width: 100%;
+    border-radius: 0.2rem;
+    aspect-ratio: 1;
+    object-fit: cover;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 12px;
+}
+.img_place {
+    box-shadow: none;
+}
+.img-wrap {
+    position: relative;
+    width: 100%;
+}
+
+.lock-badge {
+    position: relative;
+    display: block;
+    margin-top: calc(-2.2rem - 0.5rem + 1.5rem);
+    margin-bottom: -1.5rem;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2.2rem;
+    width: 2.2rem;
+    height: 2.2rem;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.55);
+    border-radius: 50%;
+    padding: 0.5rem;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 12px;
+    pointer-events: none;
+}
+
+@media (max-width: 830px) {
+    .lock-badge {
+        font-size: 1.6rem;
+        width: 1.6rem;
+        height: 1.6rem;
+        padding: 0.4rem;
+    }
+}
+.group {
+    width: calc(100% - 2.6rem);
+    padding: 0;
+    justify-content: center;
+}
+.myAllocation {
+    background-color: #63bd41;
+    color: white;
+}
+.notActive:not(.myAllocation) {
+    opacity: 0.6;
+    background-color: #f0f0f0;
+    cursor: not-allowed;
+    box-shadow: none;
+    pointer-events: none;
+}
+.myAllocation.notActive {
+    pointer-events: none;
+}
+.group h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+.group h3 {
+    margin: 0;
+    text-align: center;
+}
+@media (max-width: 830px) {
+    .group {
+        flex-direction: row;
+        width: calc(100%);
+        margin: 0;
+        margin-top: 1rem;
+        gap: 1rem;
+    }
+    .group section {
+        max-width: calc(50% - 0.5rem);
+        padding: 0;
+    }
+    .img_place, .group img {
+        min-height: 50px;
+    }
+    .myAllocationCheck {
+        width: 20vw;
+        height: 20vw;
+        font-size: 20vw;
+        margin-bottom: -20vw;
+        display: none;
+    }
+}
+.settingsHeader h2 {
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    margin-left: -80px;
+    width: 100%;
+    display: flex;
+    gap: 0.1rem;
+    flex-wrap: wrap;
+}

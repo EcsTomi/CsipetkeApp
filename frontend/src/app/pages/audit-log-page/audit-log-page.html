@@ -1,0 +1,105 @@
+<section class="full">
+    <h2 style="text-align: center; margin-top: 0">Audit napló</h2>
+
+    <div class="filters">
+        <div class="g action-filter">
+            <label>Esemény típusa</label>
+            <div class="action-groups">
+                @for (cat of actionsByCategoryKeys(); track cat) {
+                    <fieldset class="action-group" [class.auth]="cat === 'auth'">
+                        <legend>{{ cat }}</legend>
+                        @for (a of actionsByCategory()[cat]; track a) {
+                            <input type="checkbox" [id]="'act_' + a" [checked]="filterActions().includes(a)" (change)="toggleAction(a)">
+                            <label [className]="'type_' + a.split('.')[1]" [for]="'act_' + a">{{ a.split('.')[1] }}</label>
+                        }
+                    </fieldset>
+                }
+            </div>
+        </div>
+        <div class="g">
+            <label for="filterUserName">Felhasználói név</label>
+            <input type="text" [(ngModel)]="filterUserName" name="filterUserName" id="filterUserName" placeholder="pl. Kovács">
+        </div>
+        <div class="g">
+            <label for="filterTargetId">Cél ID</label>
+            <input type="number" [(ngModel)]="filterTargetId" name="filterTargetId" id="filterTargetId" placeholder="pl. 34">
+        </div>
+        <div class="g">
+            <label for="filterTargetName">Cél neve</label>
+            <input type="text" [(ngModel)]="filterTargetName" name="filterTargetName" id="filterTargetName" placeholder="pl. Film">
+        </div>
+        <div class="g">
+            <label for="filterDateFrom">Ettől</label>
+            <input type="datetime-local" [(ngModel)]="filterDateFrom" name="filterDateFrom" id="filterDateFrom">
+        </div>
+        <div class="g">
+            <label for="filterDateTo">Eddig</label>
+            <input type="datetime-local" [(ngModel)]="filterDateTo" name="filterDateTo" id="filterDateTo">
+        </div>
+        <div class="g">
+            <label for="filterStatus">Státuszkód</label>
+            <select [(ngModel)]="filterStatus" name="filterStatus" id="filterStatus">
+                <option value="0">Összes</option>
+                @for (s of statusCodes; track s) {
+                    <option [value]="s.code">{{ s.code }} - {{ s.name }}</option>
+                }
+            </select>
+        </div>
+        <div class="filterBtns">
+            <button type="button" mat-icon-button (click)="applyFilters()">
+                <mat-icon aria-hidden="true" class="material-symbols-rounded">filter_alt</mat-icon>
+                Szűrés
+            </button>
+            <button type="button" class="cancel" mat-icon-button (click)="resetFilters()">
+                <mat-icon aria-hidden="true" class="material-symbols-rounded">filter_alt_off</mat-icon>
+                Alaphelyzet
+            </button>
+        </div>
+    </div>
+
+    @if (isLoading()) {
+        <p class="hint">Betöltés...</p>
+    } @else if (items().length === 0) {
+        <p class="hint">Nincs a szűrésnek megfelelő esemény.</p>
+    } @else {
+        <div class="log-list">
+            @for (entry of items(); track entry.id) {
+                <div class="log-entry">
+                    <div class="log-header">
+                        @if (entry.user) {
+                            <img src="{{ entry.user.picture }}" class="picture">
+                            <span class="log-user">{{ entry.user.name }}</span>
+                            ({{ entry.user.class_year }}.{{ entry.user.class_letter }})
+                        } @else {
+                            <span class="log-user">Rendszer</span>
+                        }
+                        <span class="log-action">{{ entry.action.split('.')[0] }}</span>
+                        :
+                        <span [classList]="'log-action type_' + entry.action.split('.')[1]">{{ entry.action.split('.')[1] }}</span>
+                        @if (entry.target_id) {
+                            <span class="log-target">#{{ entry.target_id }}</span>
+                        }
+                        @if (entry.target_name) {
+                            <span>"{{ entry.target_name }}"</span>
+                        }
+                        <span class="log-date" title="{{ entry.created_at | date:'yyyy. MM. dd. HH:mm:ss' }}">{{entry.created_at_human}}</span>
+                    </div>
+                    @if (entry.meta) {
+                        <p class="log-meta">{{ formatMeta(entry.meta) }}</p>
+                    }
+                    <span [classList]="'log-code c' + entry.return_code">{{ entry.return_code }} - {{ returnCodeName(entry.return_code || 0) }}</span>
+                </div>
+            }
+        </div>
+
+        <div class="pagination">
+            <button type="button" mat-icon-button [disabled]="!hasPrevPage()" (click)="prevPage()">
+                <mat-icon aria-hidden="true" class="material-symbols-rounded">chevron_left</mat-icon>
+            </button>
+            <span>{{ currentPage() }} / {{ pageCount() }} ({{ total() }} esemény)</span>
+            <button type="button" mat-icon-button [disabled]="!hasNextPage()" (click)="nextPage()">
+                <mat-icon aria-hidden="true" class="material-symbols-rounded">chevron_right</mat-icon>
+            </button>
+        </div>
+    }
+</section>

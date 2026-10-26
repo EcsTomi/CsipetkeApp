@@ -1,0 +1,206 @@
+.hint {
+    color: #777;
+    font-size: 0.9rem;
+}
+.hint.small {
+    margin: 0.2rem 0 0.6rem;
+}
+
+.timeline {
+    position: relative;
+    padding-left: 1.2rem;
+}
+.timeline::before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 6px;
+    bottom: 6px;
+    width: 2px;
+    background: #e0e0e0;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+.dot {
+    position: absolute;
+    left: -1.35rem;
+    top: 2px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #bbb;
+}
+.timeline-item.current .dot {
+    background: var(--csipetke-primary);
+    box-shadow: 0 0 0 4px rgba(49, 61, 143, 0.2);
+}
+.dot img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.entry-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.4rem;
+    flex-wrap: wrap;
+}
+.version-badge {
+    font-weight: 800;
+    font-size: 0.9rem;
+    color: var(--csipetke-primary);
+}
+.current-tag {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    background: var(--csipetke-primary);
+    color: #fff;
+    padding: 0.1rem 0.5rem;
+    border-radius: 1rem;
+}
+.entry-date {
+    font-size: 0.8rem;
+    color: #888;
+    margin-left: auto;
+}
+
+.entry {
+    padding-bottom: 2rem;
+}
+
+.changes {
+    list-style: none;
+    margin: 0 0 0.6rem;
+    padding: 0;
+}
+.changes li {
+    margin-bottom: 0.6rem;
+}
+.changes i {
+    font-variant: small-caps;
+    font-style: normal;
+    font-weight: 600;
+    color: #777;
+    font-size: 0.75rem;
+    display: block;
+    margin-bottom: 0.2rem;
+}
+
+.diff {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+}
+.diff .old {
+    text-decoration: line-through;
+    color: #a33;
+    background: rgba(150, 0, 0, 0.06);
+    border-radius: 0.4rem;
+    padding: 0.3rem 0.5rem;
+    flex: 1;
+}
+.diff .new {
+    color: #1a6b1a;
+    background: rgba(0, 120, 0, 0.06);
+    border-radius: 0.4rem;
+    padding: 0.3rem 0.5rem;
+    flex: 1;
+}
+.diff .arrow {
+    flex-shrink: 0;
+    color: #999;
+    font-size: 1.1rem;
+}
+.diff .old div, .diff .new div {
+    max-height: 4rem;
+    overflow: hidden;
+}
+
+.restore-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: transparent;
+    border: 1px solid var(--csipetke-primary);
+    color: var(--csipetke-primary);
+    border-radius: 0.6rem;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    float: right;
+}
+.restore-btn:hover {
+    background: var(--csipetke-primary);
+    color: #fff;
+}
+.restore-btn mat-icon {
+    font-size: 1rem;
+    width: 1rem;
+    height: 1rem;
+}
+
+.restore-confirm {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.8rem;
+    flex-wrap: wrap;
+    background: #f7f7f7;
+    padding: 0.5rem 0.7rem;
+    border-radius: 0.6rem;
+}
+.restore-confirm button {
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.25rem 0.6rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+.restore-confirm .cancel {
+    background: #eee;
+}
+.restore-confirm .confirm {
+    background: rgba(0, 150, 0, 0.5);
+}
+.restore-confirm .confirm:hover {
+    background: rgba(0, 120, 0, 1);
+    color: #fff;
+}
+
+.word-diff {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.3rem;
+    font-size: 0.85rem;
+    line-height: 1.7;
+    margin: 0 0 0.6rem;
+}
+.wd-same {
+    color: #999;
+}
+.wd-add {
+    color: #1a6b1a;
+    background: rgba(0, 120, 0, 0.12);
+    border-radius: 0.25rem;
+    padding: 0.05rem 0.25rem;
+}
+.wd-remove {
+    color: #a33;
+    background: rgba(150, 0, 0, 0.1);
+    text-decoration: line-through;
+    border-radius: 0.25rem;
+    padding: 0.05rem 0.25rem;
+}
+.wd-ellipsis {
+    color: #bbb;
+    padding: 0 0.1rem;
+}

@@ -1,0 +1,88 @@
+<!-- task-history-panel.html -->
+<div class="history-overlay" (click)="close()">
+	<div class="history-panel" (click)="$event.stopPropagation()">
+		<div class="settingsHeader">
+			<p>Előzmények</p>
+			<button mat-icon-button (click)="close()" aria-label="Bezárás">
+				<mat-icon class="material-symbols-rounded">close</mat-icon>
+			</button>
+		</div>
+
+		<div class="history-body">
+			@if (isLoading()) {
+				<p class="hint">Betöltés...</p>
+			} @else if (versions().length === 0) {
+				<p class="hint">Még nincs rögzített verzió.</p>
+			} @else {
+				<div class="timeline">
+				@for (v of versions(); track v.version_number; let first = $first) {
+					<div class="timeline-item" [class.current]="first">
+						<div class="dot"><img src="{{ v.created_by_picture }}"></div>
+						<div class="entry">
+							<div class="entry-header">
+								<span class="version-badge">{{ v.created_by_name }}</span>
+									@if (first) { <span class="current-tag">Jelenlegi</span> }
+								<span class="entry-date">{{ v.created_at | date:'yyyy. MM. dd. HH:mm' }}</span>
+							</div>
+
+							@if (Object.keys(v.changes).length === 0) {
+								<p class="hint small">Kezdeti verzió</p>
+							} @else {
+							<ul class="changes">
+								@for (field of Object.keys(v.changes); track field) {
+								<li>
+									<i>{{ fieldLabel(field) }}</i>
+									@if (isWordDiffField(field)) {
+									<p class="word-diff">
+										@for (t of getWordDiff(field, v.changes[field].old, v.changes[field].new); track $index) {
+											@if (isEllipsis(t)) {
+												<span class="wd-ellipsis">…</span>
+											} @else if (t.type === 'same') {
+												<span class="wd-same">{{ t.text }}</span>
+											} @else if (t.type === 'remove') {
+												<span class="wd-remove">{{ t.text }}</span>
+											} @else {
+												<span class="wd-add">{{ t.text }}</span>
+											}
+										}
+									</p>
+									} @else {
+									<div class="diff">
+										@if (v.changes[field].old === null) {
+											<div class="new">{{ formatValue(field, v.changes[field].new) }}</div>
+										} @else if (v.changes[field].new === null) {
+											<div class="old">{{ formatValue(field, v.changes[field].old) }}</div>
+										} @else {
+											<div class="old">{{ formatValue(field, v.changes[field].old) }}</div>
+											<mat-icon class="material-symbols-rounded arrow">arrow_forward</mat-icon>
+											<div class="new">{{ formatValue(field, v.changes[field].new) }}</div>
+										}
+									</div>
+									}
+								</li>
+								}
+							</ul>
+							}
+
+							@if (!first) {
+							@if (pendingRestore() === v.version_number) {
+								<div class="restore-confirm">
+								<span>Biztosan visszaállítod erre a verzióra?</span>
+								<button class="cancel" (click)="cancelRestore()">Mégse</button>
+								<button class="confirm" (click)="doRestore(v.version_number)">Visszaállítás</button>
+								</div>
+							} @else {
+								<button class="restore-btn" (click)="confirmRestore(v.version_number)">
+								<mat-icon class="material-symbols-rounded">history</mat-icon>
+								Visszaállítás erre a verzióra
+								</button>
+							}
+							}
+						</div>
+					</div>
+				}
+				</div>
+			}
+		</div>
+  	</div>
+</div>

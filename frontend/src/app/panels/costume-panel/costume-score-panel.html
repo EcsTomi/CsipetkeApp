@@ -1,0 +1,82 @@
+<!-- costume-score-panel.html -->
+<div class="history-overlay" (click)="close()">
+    <div class="history-panel" (click)="$event.stopPropagation()">
+        <div [classList]="'settingsHeader class' + form().class_letter.toUpperCase()">
+            <p>{{ isEditing() ? 'Jelmezpontozás szerkesztése' : 'Jelmez pontozás' }}</p>
+            <button mat-icon-button (click)="close()" aria-label="Bezárás">
+                <mat-icon class="material-symbols-rounded">close</mat-icon>
+            </button>
+        </div>
+
+        <div class="history-body">
+            <div class="class-tabs">
+                @for (letter of classes; track letter) {
+                    <button
+                        type="button"
+                        [classList]="'class-tab class' + letter.toUpperCase()"
+                        (click)="selectClass(letter)"
+                    >
+                        {{ letter.toUpperCase() }}
+                    </button>
+                }
+            </div>
+
+            <ul class="criteria-list">
+                <li class="criteria-row">
+                    <label class="criteria-label">Jelenlévők száma</label>
+                    <div class="counter">
+                        <button type="button" (click)="setHeadcount(-1)">−</button>
+                        <span>{{ form().headcount }}</span>
+                        <button type="button" (click)="setHeadcount(1)">+</button>
+                    </div>
+                </li>
+
+                <li class="criteria-row">
+                    <label class="criteria-label">Nincs beöltözve (fő)</label>
+                    <div class="counter">
+                        <button type="button" (click)="setNotDressed(-1)">−</button>
+                        <span [style.color]="form().notDressed > 0 ? 'red' : 'inherit'">{{ form().notDressed }}</span>
+                        <button type="button" (click)="setNotDressed(1)">+</button>
+                    </div>
+                </li>
+
+                <li class="criteria-row">
+                    <label class="criteria-label">Extra jelmezelemek (db)</label>
+                    <div class="counter">
+                        <button type="button" (click)="setExtraItems(-1)">−</button>
+                        <span [style.color]="form().extraItems > 0 ? 'green' : 'inherit'">{{ form().extraItems }}</span>
+                        <button type="button" (click)="setExtraItems(1)">+</button>
+                        <button type="button" (click)="maxExtraItems()"><mat-icon class="material-symbols-rounded">select_all</mat-icon></button>
+                    </div>
+                </li>
+
+                <li class="criteria-row">
+                    <label class="criteria-label">Az OF is beöltözött</label>
+                    <button type="button" class="toggle" [class.on]="form().ofDressed" (click)="toggleOf()">
+                        {{ form().ofDressed ? 'Igen (+2)' : 'Nem' }}
+                    </button>
+                </li>
+            </ul>
+
+            <label for="note" class="hint small">Megjegyzés (opcionális)</label>
+            <input
+                type="text"
+                id="note"
+                name="note"
+                [ngModel]="form().note"
+                (ngModelChange)="setNote($event)"
+                placeholder=""
+            >
+
+            <div class="total-row">
+                <span>Összesen:</span>
+                <b [class.negative]="total() < 0">{{ total() >= 0 ? '+' : '' }}{{ total() }} pont</b>
+            </div>
+
+            <button type="button" class="save-btn" [disabled]="saving()" (click)="save()">
+                <mat-icon class="material-symbols-rounded">save</mat-icon>
+                {{ saving() ? 'Mentés...' : (isEditing() ? 'Módosítások mentése' : 'Pontok rögzítése') }}
+            </button>
+        </div>
+    </div>
+</div>

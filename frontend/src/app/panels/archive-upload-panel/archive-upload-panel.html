@@ -1,0 +1,15 @@
+<div class="upload-zone" [class.drag-over]="dragOver()" (dragover)="onDragOver($event)" (dragleave)="onDragLeave()" (drop)="onDrop($event)">
+    @if (uploading()) {
+        <div class="progress-wrap">
+            <mat-icon class="material-symbols-rounded spin">progress_activity</mat-icon>
+            <span>Feltöltés…</span>
+        </div>
+    } @else {
+        <label class="drop-label">
+            <mat-icon class="material-symbols-rounded">add_photo_alternate</mat-icon>
+            <p>Húzz ide képeket,<br>vagy kattints a tallózáshoz</p>
+            <input type="file" accept="image/jpeg,image/png,image/webp" multiple (change)="onFilesSelected($event)" hidden>
+        </label>
+    }
+    @if (error()) { <p class="upload-error">{{ error() }}</p> }
+</div>

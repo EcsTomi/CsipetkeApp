@@ -1,0 +1,34 @@
+<section class="full">
+    <stopper-panel [datetimeStarted]="startedTime" [datetimeEnded]="endedTime" [timeAdded]="timeAdded()"></stopper-panel>
+    @if(!startedTime) {
+        <button type="button" mat-icon-button (click)="start()" class="startStop start">
+            <mat-icon aria-hidden="true" class="material-symbols-rounded">timer_play</mat-icon>
+            Indítás
+        </button>
+    } @else if(!endedTime) {
+        <button type="button" mat-icon-button (click)="stop()" class="startStop stop">
+            <mat-icon aria-hidden="true" class="material-symbols-rounded">timer_off</mat-icon>
+            STOP
+        </button>
+    }
+    <br>
+    <div class="moreTime">
+        <button type="button" mat-icon-button (click)="backTime()" class="moreTime_btn" [disabled]="timeAdded() == 0">
+            <mat-icon aria-hidden="true" class="material-symbols-rounded">backspace</mat-icon>
+        </button>
+        <span class="moreTime_span">{{ timeAdded() }}s</span>
+        <button type="button" mat-icon-button (click)="moreTime()" class="moreTime_btn bigger">
+            <mat-icon aria-hidden="true" class="material-symbols-rounded">more_time</mat-icon>
+        </button>
+    </div>
+    <div class="preciseTime">
+        <span class="preciseTime_span">Indítva: {{ startedTime | date: 'HH:mm:ss.SSS' }}</span>
+        <span class="preciseTime_span">Lezárva: {{ endedTime | date: 'HH:mm:ss.SSS' }}</span>
+    </div>
+    @if(endedTime) {
+        <button type="button" mat-icon-button (click)="reset()" class="reset">
+            <mat-icon aria-hidden="true" class="material-symbols-rounded">restart_alt</mat-icon>
+            Nullázás
+        </button>
+    }
+</section>

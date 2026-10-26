@@ -1,0 +1,122 @@
+@if (auth.isAuthenticated()) {
+  <header [classList]="isRoot() + ' ' + winnerClass()">
+    <div (click)="refreshContent()" class="clickable">
+      <img src="logo.png">
+      <span>{{ title() }}</span>
+    </div>
+    <a class="btn profile" (click)="profile()"><img src="{{ userStore.profile().picture }}"></a>
+  </header>
+  <section id="overlay" [classList]="overlay() ? 'active' : ''" (click)="overlay.set(false)">
+    <div id="settings" (click)="$event.stopPropagation()">
+      <h3 class="head">Felhasználói adatok <mat-icon aria-hidden="true" class="material-symbols-rounded" style="margin-top: -2px; float: right; cursor: pointer;" (click)="overlay.set(false)">close</mat-icon></h3>
+    
+      <h1 class="name">{{ userStore.profile().name }}<br>({{ userStore.profile().role.name }})</h1>
+      <h2 class="email">{{ userStore.profile().email }}</h2>
+      
+      <button (click)="logout()">Kijelentkezés</button>
+      <button (click)="logoutFromAll()">Kijelentkezés minden eszközről</button>
+    </div>
+  </section>
+}
+@if (_queueFull()) {
+  <div class="queueFull">
+    <div class="queueFull-icon">
+      <mat-icon class="material-symbols-rounded">hourglass_top</mat-icon>
+    </div>
+    <div class="queueFull-text">
+      <span class="queueFull-title">Most sokan vagyunk itt</span>
+      <span class="queueFull-desc">A kérésed egy kicsit tovább tarthat a nagy forgalom miatt.</span>
+      @if(auth.role_code() === "admin" || auth.role_code() === "jury") {
+        <span class="queueFull-priority">
+          <mat-icon class="material-symbols-rounded">bolt</mat-icon>
+          Neked fenntartott, gyorsabb sávod van
+        </span>
+      }
+    </div>
+  </div>
+}
+@if (_isOffline() || _isFullyOffline() || _justReconnected()) {
+  <div class="offlineBanner" [class.severe]="_isFullyOffline()" [class.success]="_justReconnected()">
+    <div class="offlineBanner-icon">
+      @if (_justReconnected()) {
+        <mat-icon class="material-symbols-rounded">wifi</mat-icon>
+      } @else if (_isFullyOffline()) {
+        <mat-icon class="material-symbols-rounded">wifi_off</mat-icon>
+      } @else {
+        <mat-icon class="material-symbols-rounded">cloud_off</mat-icon>
+      }
+    </div>
+    <div class="offlineBanner-text">
+      @if (_justReconnected()) {
+        <span class="offlineBanner-title">Újra online vagy!</span>
+      } @else if (_isFullyOffline()) {
+        <span class="offlineBanner-title">Nincs kapcsolat a szerverrel</span>
+        <span class="offlineBanner-desc">Ellenőrizd a Wi-Fi kapcsolatot, vagy próbálkozz mobilhálózattal.</span>
+      } @else {
+        <span class="offlineBanner-title">Megszakadt az élő kapcsolat</span>
+        <span class="offlineBanner-desc">Előfordulhat, hogy nem minden friss — próbálunk újra csatlakozni.</span>
+      }
+    </div>
+    @if (!_justReconnected() && !_isFullyOffline()) {
+      <div class="offlineBanner-dots">
+        <span></span><span></span><span></span>
+      </div>
+    }
+  </div>
+}
+<router-outlet />
+@if (auth.isAuthenticated()) {
+  <span style="height: 8rem; display: block; font-size: 0;">.</span>
+  <nav [className]="!auth.is_organizer() ? 'classColor' + auth.class_letter().toUpperCase() : ''">
+    <a routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
+      <mat-icon aria-hidden="true" class="material-symbols-rounded">home</mat-icon>
+      Főoldal
+    </a>
+    @if (auth.isPermittedGroup("task.*")) {
+      <a routerLink="/tasks" routerLinkActive="active-link">
+        <mat-icon aria-hidden="true" class="material-symbols-rounded">list</mat-icon>
+        Feladatok
+      </a>
+    }
+    @if (auth.isPermittedGroup("vote.*")) {
+      <a routerLink="/votes" routerLinkActive="active-link">
+        <mat-icon aria-hidden="true" class="material-symbols-rounded">poll</mat-icon>
+        Szavazások
+      </a>
+    }
+    @if (auth.isPermittedGroup("point.*") || auth.isPermitted("costume.score")) {
+      <a routerLink="/points" routerLinkActive="active-link">
+        <mat-icon aria-hidden="true" class="material-symbols-rounded">stars</mat-icon>
+        Pontozás
+      </a>
+    }
+    @if (auth.isPermittedGroup("audit_log.*") || auth.isPermittedGroup("settings.*") || auth.isPermitted("program.manage") || auth.isPermitted("program.view_all")) {
+      <a routerLink="/program" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
+        <mat-icon aria-hidden="true" class="material-symbols-rounded">admin_panel_settings</mat-icon>
+        Szervezés
+      </a>
+    } @else if (auth.isPermitted("point.onsite") || auth.isPermitted("jury.score")) {
+      <a routerLink="/program/score" routerLinkActive="active-link">
+        <mat-icon aria-hidden="true" class="material-symbols-rounded">groups</mat-icon>
+        Zsűri
+      </a>
+    } @else if (auth.isPermitted("program.view_all")) {
+      <a routerLink="/program/view" routerLinkActive="active-link">
+        <mat-icon aria-hidden="true" class="material-symbols-rounded">event_note</mat-icon>
+        Program
+      </a>
+    }
+  </nav>
+}
+<div class="underMaintenance" [class.active]="underMaintenance()">
+  <div class="maintenance-card">
+    <div class="maintenance-icon">
+      <img src="logo_sima.png">
+    </div>
+    <h2>Egy csipet szünet</h2>
+    <p>A szerver most éppen nyújtózkodik egyet. Addig is türelmedet kérjük.</p>
+    <div class="maintenance-dots">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</div>

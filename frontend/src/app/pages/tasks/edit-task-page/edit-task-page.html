@@ -1,0 +1,259 @@
+<form autoComplete="off" class="full" (keydown.enter)="$event.preventDefault()" (submit)="submit(); $event.preventDefault()">
+    <section class="full">
+        <label for="name">Feladat neve</label>
+        <input
+            type="text"
+            [formField]="taskForm.name"
+            id="name"
+            placeholder="Feladat neve"
+            [class.invalid]="taskForm.name().invalid() && taskForm.name().touched()"
+        >
+        @if (taskForm.name().touched() && taskForm.name().errors().length) {
+            <p class="field-error">{{ taskForm.name().errors()[0].message }}</p>
+        }
+
+        <label for="details">Feladat leírása</label>
+        <div class="NgxEditor__Wrapper">
+        <ngx-editor-menu [editor]="editor" [toolbar]="toolbar" [colorPresets]="colorPresets"> </ngx-editor-menu>
+        <ngx-editor
+            [editor]="editor"
+            [ngModel]="taskDetails().details"
+            (ngModelChange)="setDetails($event)"
+            name="details"
+            [disabled]="false"
+            [placeholder]="'Feladat leírása...'"
+            maxlength="5000"
+        ></ngx-editor>
+        </div>
+        @if (taskForm.details().touched() && taskForm.details().errors().length) {
+            <p class="field-error">{{ taskForm.details().errors()[0].message }}</p>
+        }
+
+        <div class="g">
+            <label for="previously_public_">Előzetes, látható feladat</label><br>
+            <input
+                type="radio"
+                name="previously_public"
+                id="previously_public_not"
+                class="first not"
+                [checked]="!taskDetails().previously_public"
+                (change)="setPreviouslyPublic(false)"
+            >
+            <label for="previously_public_not">Helyszíni feladat csak</label>
+            <input
+                type="radio"
+                name="previously_public"
+                id="previously_public"
+                class="last"
+                [checked]="taskDetails().previously_public"
+                (change)="setPreviouslyPublic(true)"
+            >
+            <label for="previously_public">Igen</label>
+        </div>
+        <br>
+        @if(taskDetails().previously_public) {
+            <div class="g">
+                <label for="visible_from">Megjelenés időpontja</label>
+                <input
+                    type="datetime-local"
+                    [formField]="taskForm.visible_from"
+                    id="visible_from"
+                    [class.invalid]="taskForm.visible_from().invalid() && taskForm.visible_from().touched()"
+                >
+                @if (taskForm.visible_from().touched() && taskForm.visible_from().errors().length) {
+                    <p class="field-error">{{ taskForm.visible_from().errors()[0].message }}</p>
+                }
+            </div>
+            <div class="g">
+                <label for="available_from">Pontozás/beküldés kezdete</label>
+                <input type="checkbox" [formField]="taskForm.no_avilable_from" id="no_avilable_from">
+                <label for="no_avilable_from">Kikapcsolás</label>
+                <input
+                    type="datetime-local"
+                    [formField]="taskForm.available_from"
+                    id="available_from"
+                    [class.invalid]="taskForm.available_from().invalid() && taskForm.available_from().touched()"
+                >
+                @if (taskForm.available_from().touched() && taskForm.available_from().errors().length) {
+                    <p class="field-error">{{ taskForm.available_from().errors()[0].message }}</p>
+                }
+            </div>
+            <div class="g">
+                <label for="deadline">Határidő</label>
+                <input type="checkbox" [formField]="taskForm.no_deadline" id="no_deadline">
+                <label for="no_deadline">Kikapcsolás</label>
+                <input
+                    type="datetime-local"
+                    [formField]="taskForm.deadline"
+                    id="deadline"
+                    [class.invalid]="taskForm.deadline().invalid() && taskForm.deadline().touched()"
+                >
+                @if (taskForm.deadline().touched() && taskForm.deadline().errors().length) {
+                    <p class="field-error">{{ taskForm.deadline().errors()[0].message }}</p>
+                }
+            </div>
+        }
+        <br>
+        <div class="g">
+                <label for="file_upload_">Fájl feladat</label><br>
+                <input type="radio" value="file_upload_not" [formField]="taskForm.file_upload" id="file_upload_not" class="first not">
+                <label for="file_upload_not">Nem</label>
+                <input type="radio" value="file_upload_vid" [formField]="taskForm.file_upload" id="file_upload_vid">
+                <label for="file_upload_vid">Audió-Videó</label>
+                <input type="radio" value="file_upload_doc" [formField]="taskForm.file_upload" id="file_upload_doc">
+                <label for="file_upload_doc">Dokumentum*</label>
+                <input type="radio" value="file_upload_img" [formField]="taskForm.file_upload" id="file_upload_img">
+                <label for="file_upload_img">Kép</label>
+                <input type="radio" value="file_upload_any" [formField]="taskForm.file_upload" id="file_upload_any" class="last">
+                <label for="file_upload_any">Bármi</label>
+            <p class="note">* Dokumentumok: PDF, Word, Excel, PowerPoint, Txt</p>
+        </div>
+        <br>
+        <div class="g">
+            <label for="scoring_type_">Pontozás módja</label><br>
+            <input type="radio" [value]="scoringType.none" [formField]="taskForm.scoring_type" id="scoring_none" class="first not">
+            <label for="scoring_none">Nincs (előzetes)</label>
+            <input type="radio" [value]="scoringType.jury" [formField]="taskForm.scoring_type" id="scoring_jury">
+            <label for="scoring_jury">Zsűri</label>
+            <input type="radio" [value]="scoringType.organizer" [formField]="taskForm.scoring_type" id="scoring_organizer" class="last">
+            <label for="scoring_organizer">Szervező (helyezés)</label>
+        </div>
+        <br>
+
+        @if(taskDetails().scoring_type === scoringType.jury) {
+            <div class="g">
+                <label for="max_points">Maximális pontszám</label>
+                <input
+                    type="number"
+                    [formField]="taskForm.max_points"
+                    id="max_points"
+                    [class.invalid]="taskForm.max_points().invalid() && taskForm.max_points().touched()"
+                >
+                @if (taskForm.max_points().touched() && taskForm.max_points().errors().length) {
+                    <p class="field-error">{{ taskForm.max_points().errors()[0].message }}</p>
+                }
+                <p class="note">10-ig gombsor, felette csúszka jelenik meg a zsűrizés felületén.</p>
+            </div>
+            <br>
+        }
+
+        @if(taskDetails().scoring_type === scoringType.organizer) {
+            <div class="g placement-editor">
+                <label>Helyezés-pont táblázat</label>
+                @for (row of taskForm.placementRows; track $index) {
+                    <div class="placement-row">
+                        <input
+                            type="text"
+                            [formField]="row.placement"
+                            placeholder="pl. 1"
+                            class="placement-input"
+                            [class.invalid]="row.placement().invalid() && row.placement().touched()"
+                        >
+                        <span>. hely →</span>
+                        <input
+                            type="number"
+                            [formField]="row.points"
+                            placeholder="pont"
+                            class="points-input"
+                            [class.invalid]="row.points().invalid() && row.points().touched()"
+                        >
+                        <span>pont</span>
+                        <button type="button" class="remove-row-btn" (click)="removePlacementRow($index)">
+                            <mat-icon class="material-symbols-rounded">close</mat-icon>
+                        </button>
+                    </div>
+                    @if (row.placement().touched() && row.placement().errors().length) {
+                        <p class="field-error">{{ row.placement().errors()[0].message }}</p>
+                    }
+                    @if (row.points().touched() && row.points().errors().length) {
+                        <p class="field-error">{{ row.points().errors()[0].message }}</p>
+                    }
+                }
+                <button type="button" class="add-row-btn" (click)="addPlacementRow()">
+                    <mat-icon class="material-symbols-rounded">add</mat-icon>
+                    Új sor
+                </button>
+            </div>
+            <br>
+        }
+        <br>
+        @if(auth.isPermitted("task.restore")) {
+            <div class="g">
+                <label for="is_deleted_">Törlési állapot</label><br>
+                <input
+                    type="radio"
+                    name="is_deleted"
+                    id="is_deleted"
+                    class="first not"
+                    [checked]="taskDetails().is_deleted"
+                    (change)="setIsDeleted(true)"
+                >
+                <label for="is_deleted">Törölt</label>
+                @if(taskDetails().is_deleted) {
+                    <input
+                        type="radio"
+                        name="is_deleted"
+                        id="is_deleted_back"
+                        class="last"
+                        [checked]="!taskDetails().is_deleted"
+                        (change)="setIsDeleted(false)"
+                    >
+                    <label for="is_deleted_back">Visszaállított</label>
+                } @else {
+                    <input
+                        type="radio"
+                        name="is_deleted"
+                        id="is_deleted_back"
+                        class="last"
+                        [checked]="!taskDetails().is_deleted"
+                        (change)="setIsDeleted(false)"
+                    >
+                    <label for="is_deleted_back">Normál</label>
+                }
+            </div>
+        }
+        <br>
+    </section>
+    @if (error()) {
+        <p style="color: red;">{{ error() }}</p>
+    }
+    <div class="btns">
+    @if (id() == -1) {
+        <button type="submit" mat-icon-button value="create" [disabled]="submitting()">
+            <mat-icon aria-hidden="true" class="material-symbols-rounded">add</mat-icon>
+            Létrehozás
+        </button>
+    } @else {
+        <button type="button" class="cancel" mat-icon-button (click)="close()">
+            <mat-icon aria-hidden="true" class="material-symbols-rounded">arrow_back</mat-icon>
+            Mégse
+        </button>
+        <button type="submit" mat-icon-button [disabled]="submitting()">
+            <mat-icon aria-hidden="true" class="material-symbols-rounded">save</mat-icon>
+            Mentés
+        </button>
+    }
+    </div>
+    @if(id() != -1) {
+        <br>
+        @if(!showingDelete()) {
+            <div class="btns">
+                <button type="button" mat-icon-button class="delete" (click)="showDelete()">
+                    <mat-icon aria-hidden="true" class="material-symbols-rounded">delete</mat-icon>
+                    Törlés
+                </button>
+            </div>
+        }
+        @if(showingDelete()) {
+            <div class="confirm">
+                <button type="button" mat-icon-button (click)="hideDelete()">
+                    Mégse
+                </button>
+                <button type="button" mat-icon-button class="delete" (click)="delete()">
+                    <mat-icon aria-hidden="true" class="material-symbols-rounded">delete</mat-icon>
+                    Törlés
+                </button>
+            </div>
+        }
+    }
+</form>

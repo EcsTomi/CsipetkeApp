@@ -1,0 +1,14 @@
+h2 {
+    margin: 0;
+    padding: 0;
+}
+.notActive {
+    opacity: 0.6;
+    background-color: #f0f0f0;
+}
+.small {
+    font-size: 0.8rem;
+}
+.on-site {
+    border: 2px solid var(--csipetke-primary);
+}

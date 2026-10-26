@@ -1,0 +1,56 @@
+.onlyOne {
+    width: 100% !important;
+}
+
+.summary-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+}
+.hidden-amount {
+    color: #888;
+    font-size: 0.8rem;
+    margin: 0.3rem 0 0;
+}
+
+.costume-score-link {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    width: 80%;
+    max-width: 480px;
+    margin: 1.2rem auto 0;
+    padding: 0.9rem 1.2rem;
+    border: none;
+    border-radius: 0.9rem;
+    background: linear-gradient(135deg, var(--csipetke-primary), #4a5bb8);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: rgba(49, 61, 143, 0.3) 0px 4px 14px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.costume-score-link:hover {
+    transform: translateY(-1px);
+    box-shadow: rgba(49, 61, 143, 0.4) 0px 6px 18px;
+}
+.costume-score-link:active {
+    transform: translateY(0);
+}
+.costume-score-link mat-icon:first-child {
+    font-size: 1.4rem;
+    width: 1.4rem;
+    height: 1.4rem;
+}
+.costume-score-link span {
+    flex: 1;
+    text-align: left;
+}
+.costume-score-link .chevron {
+    opacity: 0.8;
+    font-size: 1.2rem;
+    width: 1.2rem;
+    height: 1.2rem;
+}

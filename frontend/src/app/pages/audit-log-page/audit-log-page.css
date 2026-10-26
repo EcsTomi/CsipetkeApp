@@ -1,0 +1,208 @@
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    align-items: flex-end;
+    margin-bottom: 1.5rem;
+    width: 100%;
+}
+.filters .g {
+    display: flex;
+    flex-direction: column;
+    min-width: 140px;
+}
+.filterBtns {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.log-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    width: calc(100% - 0.8rem);
+}
+.log-entry {
+    background: #fafafa;
+    border-radius: 0.6rem;
+    padding: 0.6rem 0.9rem;
+    width: calc(100% - 1.8rem);
+}
+.log-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    width: 100%;
+}
+.log-header .picture {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+}
+.log-user {
+    font-weight: 600;
+}
+.log-action {
+    font-family: monospace;
+    background: rgba(49, 61, 143, 0.1);
+    color: var(--csipetke-primary);
+    border-radius: 0.4rem;
+    padding: 0.1rem 0.5rem;
+    font-size: 0.85rem;
+}
+.log-target {
+    color: #888;
+    font-size: 0.85rem;
+}
+.log-date {
+    margin-left: auto;
+    color: #888;
+    font-size: 0.8rem;
+}
+.log-meta {
+    margin: 0.4rem 0 0;
+    color: #666;
+    font-size: 0.85rem;
+    word-break: break-word;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+input, select {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.6rem;
+    border-radius: 0.4rem;
+    border: 1px solid #ccc;
+    color: #333;
+    background: #fff;
+}
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--csipetke-primary);
+}
+button {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0.4rem 0.6rem;
+    border-radius: 0.4rem;
+    border: 1px solid #ccc;
+    color: #333;
+    background: #fff;
+}
+button:hover {
+    background: var(--csipetke-primary);
+    color: #fff;
+}
+
+@keyframes notify-important {
+    0% { box-shadow: 0 0 0 0 rgba(200, 0, 0, 1); }
+    70% { box-shadow: 0 0 0 10px rgba(200, 0, 0, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(200, 0, 0, 0); }
+}
+
+input[type=checkbox]:checked+label {
+    background: transparent;
+    color: black;
+    box-shadow: inset 0 0 2px 2px var(--csipetke-primary);
+}
+
+.log-code {
+    font-family: monospace;
+    background: rgba(49, 61, 143, 0.1);
+    color: var(--csipetke-primary);
+    border-radius: 0.4rem;
+    padding: 0.1rem 0.5rem;
+    font-size: 0.85rem;
+}
+.log-code.c200 {
+    color: #1a6b1a;
+    background: rgba(0, 120, 0, 0.12);
+}
+.log-code.c400 {
+    color: #a33;
+    background: rgba(150, 0, 0, 0.1);
+}
+.log-code.c403 {
+    color: white;
+    background: rgba(200, 0, 0, 1);
+    animation: notify-important 0.5s infinite;
+}
+.log-code.c404 {
+    color: gray;
+    background: rgba(150, 0, 0, 0.1);
+}
+.log-code.c413 {
+    color: white;
+    background: rgba(200, 0, 0, 1);
+    animation: notify-important 0.5s infinite;
+}
+.log-code.c415 {
+    color: white;
+    background: rgba(200, 0, 0, 1);
+    animation: notify-important 0.5s infinite;
+}
+.log-code.c429 {
+    color: white;
+    background: rgba(200, 0, 0, 1);
+    animation: notify-important 0.5s infinite;
+}
+.type_create {
+    color: #1a6b1a !important;
+    background: rgba(0, 120, 0, 0.12) !important;
+}
+.type_remove {
+    color: #a33 !important;
+    background: rgba(150, 0, 0, 0.1) !important;
+}
+.type_blocked {
+    color: #a33 !important;
+    background: rgba(150, 0, 0, 0.1) !important;
+}
+.type_login_fail {
+    color: #a33 !important;
+    background: rgba(150, 0, 0, 0.1) !important;
+}
+.type_update {
+    color: #0a4bcc !important;
+    background: rgba(0, 120, 200, 0.12) !important;
+}
+.type_login { /*Yellow*/
+    color: #aa0 !important;
+    background: rgba(255, 255, 0, 0.12) !important;
+}
+
+.action-filter {
+    width: 100%;
+    max-width: none;
+}
+.action-groups {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+.action-group {
+    border: 1px solid #eee;
+    border-radius: 0.6rem;
+    padding: 0.4rem 0.6rem 0.5rem;
+    margin: 0;
+}
+.action-group legend {
+    font-variant: small-caps;
+    font-weight: 600;
+    font-size: 0.75rem;
+    color: #777;
+    padding: 0 0.3rem;
+}
+.action-group.auth {
+    border-color: rgba(150, 100, 0, 0.25);
+    background: rgba(150, 100, 0, 0.04);
+}
+.action-group.auth legend {
+    color: #a37a00;
+}

@@ -1,0 +1,106 @@
+<section class="full">
+    <h2 style="text-align: center; margin-top: 0">Verseny-vezérlés</h2>
+    @if (canFreeze()) {
+        <div class="freeze-section">
+            <h3>Pontok közlése</h3>
+
+            @if (!isFrozen()) {
+                <button type="button" class="pause-btn" mat-icon-button (click)="pause()">
+                    <mat-icon class="material-symbols-rounded">pause_circle</mat-icon>
+                    Szüneteltetés
+                </button>
+            } @else {
+                <p class="frozen-hint">A pontok jelenleg szüneteltetve vannak a nyilvánosság elől.</p>
+
+                @if (publishStep() === 0) {
+                    <button type="button" class="publish-btn" mat-icon-button (click)="startPublish()">
+                        <mat-icon class="material-symbols-rounded">campaign</mat-icon>
+                        Publikálás
+                    </button>
+                } @else if (publishStep() === 1) {
+                    <div class="confirm-box">
+                        <span>Biztosan publikálod a pontokat?</span>
+                        <button type="button" class="cancel" (click)="cancelPublish()">Mégse</button>
+                        <button type="button" class="confirm" (click)="confirmPublishStep()">Igen, folytatom</button>
+                    </div>
+                } @else if (publishStep() === 2) {
+                    <div class="confirm-box final">
+                        <span>Ez végleges — mindenki azonnal látni fogja az eredményeket. Biztosan?</span>
+                        <button type="button" class="cancel" (click)="cancelPublish()">Mégse</button>
+                        <button type="button" class="confirm" (click)="confirmPublishStep()">Publikálás most</button>
+                    </div>
+                }
+            }
+        </div>
+    }
+    @if (canManageJuryWindow()) {
+        <div class="jury-window-section">
+            <h3>Zsűrizési időablak</h3>
+            <div class="window-inputs">
+                <div class="g">
+                    <label for="juryStart">Kezdete</label>
+                    <input type="datetime-local" [(ngModel)]="juryWindowStart" name="juryStart" id="juryStart">
+                </div>
+                <div class="g">
+                    <label for="juryEnd">Vége</label>
+                    <input type="datetime-local" [(ngModel)]="juryWindowEnd" name="juryEnd" id="juryEnd">
+                </div>
+            </div>
+            <button
+                type="button"
+                class="save-window-btn"
+                [disabled]="!juryWindowStart() || !juryWindowEnd()"
+                (click)="saveJuryWindow()"
+            >
+                <mat-icon class="material-symbols-rounded">save</mat-icon>
+                Mentés
+            </button>
+
+            @if (juryWindowStart() && juryWindowEnd()) {
+                <p class="current-window-hint">
+                    Jelenleg beállítva: {{ eventSettingsStore.juryWindowStart() | date:'yyyy. MM. dd. HH:mm' }}
+                    –
+                    {{ eventSettingsStore.juryWindowEnd() | date:'yyyy. MM. dd. HH:mm' }}
+                </p>
+            }
+        </div>
+    }
+    <br>
+    <br>
+    @if (auth.is_admin()) {
+        <div class="freeze-section">
+            <h3>Végeredmény publikálása</h3>
+            Jelenlegi: {{ eventSettingsStore.winningClass() || '–' }}<br>
+            
+            <select [(ngModel)]="winningClass" name="winningClass" id="winningClass" [disabled]="publishWinnerStep() > 0">
+                <option value="none">–</option>
+                <option value="a">A</option><option value="b">B</option>
+                <option value="c">C</option><option value="d">D</option>
+            </select>
+            @if (publishWinnerStep() === 0) {
+                <button type="button" class="publish-btn" mat-icon-button (click)="startWinnerPublish()">
+                    <mat-icon class="material-symbols-rounded">campaign</mat-icon>
+                    Publikálás
+                </button>
+            } @else if (publishWinnerStep() === 1) {
+                <div class="confirm-box">
+                    <span>Biztosan publikálod a végeredményt?</span>
+                    <button type="button" class="cancel" (click)="cancelPublishWinner()">Mégse</button>
+                    <button type="button" class="confirm" (click)="confirmPublishWinnerStep()">Igen, folytatom</button>
+                </div>
+            } @else if (publishWinnerStep() === 2) {
+                <div class="confirm-box">
+                    <span>Biztosan publikálod a végeredményt?</span>
+                    <button type="button" class="cancel" (click)="cancelPublishWinner()">Mégse</button>
+                    <button type="button" disabled>{{ publishWinnerStepTimeRemaining() }} s</button>
+                </div>
+            } @else if (publishWinnerStep() === 3) {
+                <div class="confirm-box final">
+                    <span>Ez végleges — mindenki azonnal látni fogja hogy a [{{ winningClass().toUpperCase() || '–' }}] osztály nyert. Biztosan?</span>
+                    <button type="button" class="cancel" (click)="cancelPublishWinner()">Mégse</button>
+                    <button type="button" class="confirm" (click)="confirmPublishWinnerStep()">NYERT a(z) {{ winningClass().toUpperCase() }} osztály</button>
+                </div>
+            }
+        </div>
+    }
+</section>

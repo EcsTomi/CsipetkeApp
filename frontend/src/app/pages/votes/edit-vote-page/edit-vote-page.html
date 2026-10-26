@@ -1,0 +1,166 @@
+<form autoComplete="off" class="full" (keydown.enter)="$event.preventDefault()" (submit)="submit(); $event.preventDefault()">
+    <section class="full">
+        <label for="name">Szavazás neve</label>
+        <input type="text"
+            [formField]="voteForm.name"
+            id="name"
+            placeholder="Szavazás neve"
+            [class.invalid]="voteForm.name().invalid() && voteForm.name().touched()">
+        @if (voteForm.name().touched() && voteForm.name().errors().length) {
+            <p class="field-error">{{ voteForm.name().errors()[0].message }}</p>
+        }
+        <div class="g">
+            <label for="visible_from">Megjelenés időpontja</label>
+            <input type="datetime-local" 
+                [formField]="voteForm.visible_from"
+                id="visible_from"
+                [class.invalid]="voteForm.visible_from().invalid() && voteForm.visible_from().touched()">
+            @if (voteForm.visible_from().touched() && voteForm.visible_from().errors().length) {
+                <p class="field-error">{{ voteForm.visible_from().errors()[0].message }}</p>
+            }
+        </div>
+        <div class="g">
+            <label for="available_from">Szavazás kezdete</label>
+            <input type="datetime-local"
+                [formField]="voteForm.available_from" 
+                id="available_from"
+                [class.invalid]="voteForm.available_from().invalid() && voteForm.available_from().touched()">
+            @if (voteForm.available_from().touched() && voteForm.available_from().errors().length) {
+                <p class="field-error">{{ voteForm.available_from().errors()[0].message }}</p>
+            }
+        </div>
+        <div class="g">
+            <label for="deadline">Szavazás vége</label>
+            <input type="checkbox" id="no_deadline" [formField]="voteForm.no_deadline">
+            <label for="no_deadline">Kikapcsolás</label>
+            <input type="datetime-local" 
+                [formField]="voteForm.deadline"
+                id="deadline"
+                [class.invalid]="voteForm.deadline().invalid() && voteForm.deadline().touched()">
+            @if (voteForm.deadline().touched() && voteForm.deadline().errors().length) {
+                <p class="field-error">{{ voteForm.deadline().errors()[0].message }}</p>
+            }
+        </div>
+        <br>
+        @if(auth.isPermitted("task.restore")) {
+            <div class="g">
+                <label for="is_deleted_">Törlési állapot</label><br>
+                <input
+                    type="radio"
+                    name="is_deleted"
+                    id="is_deleted"
+                    class="first not"
+                    [checked]="voteDetails().is_deleted"
+                    (change)="setIsDeleted(true)"
+                >
+                <label for="is_deleted">Törölt</label>
+                @if(voteDetails().is_deleted) {
+                    <input
+                        type="radio"
+                        name="is_deleted"
+                        id="is_deleted_back"
+                        class="last"
+                        [checked]="!voteDetails().is_deleted"
+                        (change)="setIsDeleted(false)"
+                    >
+                    <label for="is_deleted_back">Visszaállított</label>
+                } @else {
+                    <input
+                        type="radio"
+                        name="is_deleted"
+                        id="is_deleted_back"
+                        class="last"
+                        [checked]="!voteDetails().is_deleted"
+                        (change)="setIsDeleted(false)"
+                    >
+                    <label for="is_deleted_back">Normál</label>
+                }
+            </div>
+        }
+        <br>
+    </section>
+    <h2>Szavazási opciók</h2>
+    @if(id() != -1) {
+        <section class="group">
+            @for (o of voteForm.options; track $index) {
+                <div class="option">
+                    <input
+                        type="text"
+                        [formField]="o.name"
+                        (blur)="saveOptionName(o)"
+                        id="option_name_{{ o.id().value() }}"
+                        placeholder="Szavazás opció neve"
+                        [class.invalid]="o.name().invalid() && o.name().touched()"
+                    >
+                    @if (o.name().touched() && o.name().errors().length) {
+                        <p class="field-error">{{ o.name().errors()[0].message }}</p>
+                    }
+                    <vote-img-upload-panel
+                        [voteId]="id()"
+                        [optionId]="o.id().value()"
+                    ></vote-img-upload-panel>
+                    <button type="button" (click)="removeOption(o.id().value())" mat-icon-button class="remove">
+                        <mat-icon class="material-symbols-rounded">remove</mat-icon>
+                    </button>
+                </div>
+            }
+            <div class="option">
+                <input type="text" [(ngModel)]="option_name_new" name="option_name_new" id="option_name_new" placeholder="Szavazás opció neve">
+                @if (optionNameError()) {
+                    <p class="field-error">{{ optionNameError() }}</p>
+                }
+                <button type="button" (click)="newOption()" mat-icon-button class="add" [disabled]="!option_name_new().length || !!optionNameError()">
+                    <mat-icon class="material-symbols-rounded">add</mat-icon>
+                </button>
+            </div>
+        </section>
+    } @else {
+        <section>
+        <i>(Az opciók hozzáadása előtt létre kell hozni a feladatot.)</i>
+        </section>
+    }
+    <br>
+    @if (error()) {
+        <p style="color: red;">{{ error() }}</p>
+    }
+    <div class="btns">
+    @if (id() == -1) {
+        <button type="submit" mat-icon-button value="create" [disabled]="submitting()">
+            <mat-icon aria-hidden="true" class="material-symbols-rounded">add</mat-icon>
+            Létrehozás
+        </button>
+    } @else {
+        <button type="button" class="cancel" mat-icon-button (click)="close()">
+            <mat-icon aria-hidden="true" class="material-symbols-rounded">arrow_back</mat-icon>
+            Mégse
+        </button>
+        <button type="submit" mat-icon-button [disabled]="submitting()">
+            <mat-icon aria-hidden="true" class="material-symbols-rounded">save</mat-icon>
+            Mentés
+        </button>
+    }
+    </div>
+    @if(id() != -1) {
+        <br>
+        @if(!showingDelete()) {
+            <div class="btns">
+                <button type="button" mat-icon-button class="delete" (click)="showDelete()">
+                    <mat-icon aria-hidden="true" class="material-symbols-rounded">delete</mat-icon>
+                    Törlés
+                </button>
+            </div>
+        }
+        @if(showingDelete()) {
+            <div class="confirm">
+                <button type="button" mat-icon-button (click)="hideDelete()">
+                    Mégse
+                </button>
+                <button type="button" mat-icon-button class="delete" (click)="delete()">
+                    <mat-icon aria-hidden="true" class="material-symbols-rounded">delete</mat-icon>
+                    Törlés
+                </button>
+            </div>
+        }
+    }
+    
+</form>

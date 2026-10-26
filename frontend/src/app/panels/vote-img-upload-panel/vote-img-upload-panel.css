@@ -1,0 +1,98 @@
+:host {
+    margin: auto;
+}
+/* task-submission-upload.css */
+.upload-zone {
+    border: 2px dashed #d0d0d8;
+    border-radius: 1rem;
+    padding: 1.8rem 1.2rem;
+    text-align: center;
+    background: #fafafc;
+    transition: all 0.2s ease;
+    position: relative;
+    width: calc(100% - 2.4rem);
+    display: block;
+    margin: auto;
+}
+.upload-zone:has(img) {
+    padding: 0;
+} 
+
+.upload-zone.drag-over {
+    border-color: var(--csipetke-primary);
+    background: rgba(79, 70, 229, 0.06);
+}
+
+.drop-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    color: #666;
+    z-index: 2;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.75);
+    justify-content: center;
+}
+
+.drop-label mat-icon {
+    font-size: 2.4rem;
+    width: 2.4rem;
+    height: 2.4rem;
+    color: var(--csipetke-primary);
+}
+
+.drop-label p {
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+}
+
+.progress-wrap mat-icon.spin {
+    color: var(--csipetke-primary);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.progress-wrap span {
+    font-size: 0.85rem;
+    color: #666;
+    min-width: 2.5rem;
+    text-align: right;
+}
+
+.upload-error {
+    margin: 0.7rem 0 0;
+    color: #a33;
+    font-size: 0.85rem;
+}
+
+@media (max-width: 480px) {
+    .upload-zone {
+        padding: 1.2rem 0.8rem;
+    }
+}
+input[type="file"] {
+    display: none;
+}
+img {
+    width: 100%;
+    height: 100%;
+    border-radius: 0.9rem;
+    margin-bottom: -6px;
+}

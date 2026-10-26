@@ -1,0 +1,133 @@
+@if (showHistory()) {
+    <task-history-panel
+        [entityType]="'task'"
+        [taskId]="id()!"
+        (closed)="showHistory.set(false)"
+        (restored)="showHistory.set(false)"
+    ></task-history-panel>
+}
+@if (showAddPoint()) {
+    <add-point-panel
+        [presetTaskId]="id()"
+        (closed)="showAddPoint.set(false)"
+        (created)="showAddPoint.set(false)"
+    ></add-point-panel>
+}
+@if (task()) {
+    <section [classList]="'full' + (task()?.is_deleted ? ' deleted' : '')">
+        @if (auth.isPermitted("task.edit")) {
+            <div class="settingsHeader">
+                <button mat-icon-button (click)="back()">
+                    <mat-icon aria-hidden="true" class="material-symbols-rounded">arrow_back</mat-icon>
+                </button>
+                <p>Utoljára módosította: 
+                    <span><img src="{{ task()?.modified_by?.picture }}" class="picture"> {{ task()?.modified_by?.name }}</span>
+                </p>
+                <button type="button" class="history-toggle" mat-icon-button (click)="showHistory.set(true)">
+                    <mat-icon aria-hidden="true" class="material-symbols-rounded">history</mat-icon>
+                    Előzmények
+                </button>
+                <button (click)="modify()" mat-icon-button>
+                    <mat-icon aria-hidden="true" class="material-symbols-rounded">edit</mat-icon>
+                </button>
+            </div>
+            <h2>{{ task()?.name }}</h2>
+        } @else {
+            <div [classList]="'settingsHeader class' + classLetter().toUpperCase()">
+                <button mat-icon-button (click)="back()">
+                    <mat-icon aria-hidden="true" class="material-symbols-rounded">arrow_back</mat-icon>
+                </button>
+                <h2>{{ task()?.name }}</h2>
+            </div>
+        }
+        
+        <p [innerHTML]="(task()?.details || '') | safeHtml"></p>
+        @if(task()?.previously_public) {
+            @if(auth.isPermitted("task.hidden") || auth.isPermitted("task.edit")) {
+                <p style="text-align: left">Látható:<br>{{ task()?.visible_from_human }}</p>
+            } @else {
+                <p style="text-align: left">Megjelent:<br>{{ task()?.visible_from_human }}</p>
+            }
+            @if(task()?.available_from) {
+                @if(task()?.file_upload == fileUpload.file_upload_not) {
+                    <p style="text-align: left">Pontozás kezdete:<br>{{ task()?.available_from_human }}</p>
+                } @else {
+                    <p style="text-align: left">Beküldés kezdete:<br>{{ task()?.available_from_human }}</p>
+                }
+            }
+            @if(task()?.deadline) {
+                <p style="text-align: left">Határidő:<br>{{ task()?.deadline_human }}</p>
+            }
+            @if(task()?.file_upload != fileUpload.file_upload_not) {
+                <p>
+                    A feladathoz feltölthető
+                @switch(task()?.file_upload) {
+                    @case(fileUpload.file_upload_vid) {
+                        bármilyen audió- vagy videófájl.
+                    }
+                    @case(fileUpload.file_upload_doc) {
+                        dokumentum.
+                    }
+                    @case(fileUpload.file_upload_img) {
+                        kép.
+                    }
+                    @case(fileUpload.file_upload_any) {
+                        bármi.
+                    }
+                }
+                </p>
+                @if (auth.isPermitted("submission.submit") || auth.isPermitted("submission.get_self")) {
+                    <submission-upload-panel 
+                        [taskId]="id()!" 
+                        [fileUploadType]="task()?.file_upload || fileUpload.file_upload_not"
+                        [canUpload]="auth.isPermitted('submission.submit')"
+                    ></submission-upload-panel>
+                }
+            }
+        } @else {
+            <h2>Helyszíni feladat</h2>
+        }
+    </section>
+    <br>
+    @if((auth.isPermitted("submission.all") || auth.isPermitted("submission.list_other")) && task()?.file_upload != fileUpload.file_upload_not) {
+        <section class="group full">
+            @for (classLetter of ['a', 'b', 'c', 'd']; track $index) {
+                <section class="class-card smaller noClick full class{{ classLetter.toUpperCase() }}" mat-icon-button>
+                    <h2>{{ classLetter.toUpperCase() }}</h2>
+                    @for (submission of task()!.submissions; track $index) {
+                        @if (submission.class_letter == classLetter) {
+                            @if (auth.isPermitted("submission.all")) {
+                                @if(isLateUploaded(classLetter)) {
+                                    <span><mat-icon aria-hidden="true" class="material-symbols-rounded" [style.color]="'red'">assignment_late</mat-icon><br><b>{{ submission.uploaded_at | date:'yyyy. MM. dd. HH:mm' }}</b> <br> {{ submission.user.name }}</span>
+                                } @else {
+                                    <span><mat-icon aria-hidden="true" class="material-symbols-rounded">done</mat-icon><br>{{ submission.uploaded_at | date:'yyyy. MM. dd. HH:mm' }} <br> {{ submission.user.name }}</span>
+                                }
+                                
+                                <p>{{ submission.original_filename }} ({{ formatSize(submission.size_bytes) }})</p>
+                                @if (downloadingLetter() != classLetter) {
+                                    <button (click)="downloadSubmission(classLetter)" mat-icon-button [disabled]="downloadingLetter() != ''">
+                                        <mat-icon aria-hidden="true" class="material-symbols-rounded">download</mat-icon>
+                                        Letöltés
+                                    </button>
+                                } @else {
+                                    <div class="progress-wrap">
+                                        <mat-icon class="material-symbols-rounded spin">progress_activity</mat-icon>
+                                    </div>
+                                }
+                            } @else {
+                                <span><mat-icon aria-hidden="true" class="material-symbols-rounded">done</mat-icon><br>
+                                {{ submission.uploaded_at | date:'yyyy. MM. dd. HH:mm' }}</span>
+                            }
+                        }
+                    }
+                </section>
+            }
+        </section>
+    }
+    <br>
+    
+} @else {
+    <section class="full">
+        <h2 style="text-align: center">Nincs ilyen feladat</h2>
+    </section>
+}

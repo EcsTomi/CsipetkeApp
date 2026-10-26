@@ -1,0 +1,46 @@
+<div class="group">
+	@if (auth.is_organizer()) {
+		<section (click)="goTo('/racing')">
+			<mat-icon aria-hidden="true" class="material-symbols-rounded">timer_play</mat-icon>
+			Stopper
+        </section>
+	}
+	@if (auth.isPermitted("jury.score") || auth.isPermitted("point.onsite")) {
+		<section (click)="goTo('/program/score')">
+			<mat-icon aria-hidden="true" class="material-symbols-rounded">groups</mat-icon>
+			Zsűri
+        </section>
+	}
+	@if (auth.isPermitted("program.view_all") || auth.isPermitted("program.manage")) {
+		<section (click)="goTo('/program/view')">
+			<mat-icon aria-hidden="true" class="material-symbols-rounded">event_note</mat-icon>
+			Program megtekintés
+        </section>
+	}
+    @if (auth.isPermitted("settings.freeze") || auth.isPermitted("settings.jury_window")) {
+        <section (click)="goTo('/program/control')">
+			<mat-icon aria-hidden="true" class="material-symbols-rounded">settings</mat-icon>
+			Vezérlés
+        </section>
+    }
+    @if (auth.isPermitted("program.manage")) {
+		<section (click)="goTo('/program/order')">
+			<mat-icon aria-hidden="true" class="material-symbols-rounded">assignment</mat-icon>
+			Tervezés
+		</section>
+    }
+    
+    @if (auth.isPermittedGroup("audit_log.*")) {
+		<section (click)="goTo('/audit_log')">
+			<mat-icon aria-hidden="true" class="material-symbols-rounded">history</mat-icon>
+			LOG
+		</section>
+    }
+
+	@if (auth.isPermittedGroup("admin.permission")) {
+		<section (click)="goTo('/admin/permission')">
+			<mat-icon aria-hidden="true" class="material-symbols-rounded">shield_person</mat-icon>
+			Jogosultság kezelés
+		</section>
+    }
+</div>

@@ -1,0 +1,24 @@
+@if (!isLoading()) {
+    @if (auth.isPermitted("task.edit")) {
+        <div class="settingsHeader">
+            <p>{{ tasks().length }} feladat <span class="small">({{ visibleCount() }} látható)</span></p>
+            <button (click)="createTask()" mat-icon-button>
+                <mat-icon aria-hidden="true" class="material-symbols-rounded">add</mat-icon>
+            </button>
+        </div>
+    }
+    @if (tasks().length) {
+        <div class="group">
+            @for (task of tasks(); track $index) {
+                <section [classList]="task.is_visible ? '' : (task.is_deleted ? 'deleted' : (task.previously_public ? 'notActive' : 'on-site'))" (click)="selectTask(task.id)">
+                    <h2>{{ task.name }}</h2>
+                    <p [innerHTML]="task.details | safeHtmlEllipsis"></p>
+                </section>
+            }
+        </div>
+    } @else {
+        <section>
+            <h2 style="text-align: center">Nincs feladat</h2>
+        </section>
+    }
+}

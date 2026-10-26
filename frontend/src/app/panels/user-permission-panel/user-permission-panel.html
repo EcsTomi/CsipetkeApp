@@ -1,0 +1,60 @@
+<div class="permission-overlay" (click)="close()">
+	<div class="permission-panel" (click)="$event.stopPropagation()">
+		<div class="settingsHeader">
+			<p>Jogosultságok kezelése</p>
+			<button mat-icon-button (click)="close()" aria-label="Bezárás">
+				<mat-icon class="material-symbols-rounded">close</mat-icon>
+			</button>
+		</div>
+
+		<div class="permission-body">
+			@if (isLoading()) {
+				<p class="hint">Betöltés...</p>
+			} @else {
+				<div class="g">
+					<label for="userRole">Szerepkör</label>
+					<select id="userRole" [ngModel]="stagedRoleCode()" (ngModelChange)="onRoleChange($event)">
+						<option value="">— nincs —</option>
+						@for (role of roles(); track role.code) {
+							<option [value]="role.code">{{ role.name }}</option>
+						}
+					</select>
+				</div>
+
+				<p class="hint small">
+					A pipa nélküli sorok a szerepkörből öröklődnek. Egy sor átpipálása/kikapcsolása egyedi
+					felülbírálást hoz létre — ezt a visszaállítás gombbal törölheted.
+				</p>
+
+				@for (category of groupedPermissions() | keyvalue; track category.key) {
+					<div class="permGroup">
+						<h3>{{ category.key }}</h3>
+						@for (perm of category.value; track perm.code) {
+							<label class="permRow" [class.overridden]="isOverridden(perm.code)" [class.default]="isDefault(perm.code)">
+								<input type="checkbox" [checked]="effectiveState(perm.code)" (change)="togglePermission(perm.code)" />
+								<span class="permName">{{ perm.name }}</span>
+								@if (isOverridden(perm.code)) {
+									<span class="overrideTag" [class.granted]="effectiveState(perm.code)">
+										{{ effectiveState(perm.code) ? 'Felülbírálva: megadva' : 'Felülbírálva: megvonva' }}
+									</span>
+								}
+							</label>
+						}
+					</div>
+				}
+
+				@if (saveError()) {
+					<p style="color: red">{{ saveError() }}</p>
+				}
+
+				<div class="btns">
+					<button type="button" class="cancel" mat-icon-button (click)="close()">Mégse</button>
+					<button type="button" mat-icon-button [disabled]="saving()" (click)="save()">
+						<mat-icon class="material-symbols-rounded">save</mat-icon>
+						Mentés
+					</button>
+				</div>
+			}
+		</div>
+	</div>
+</div>

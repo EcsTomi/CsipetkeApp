@@ -1,0 +1,172 @@
+.order-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    max-width: calc(100% - 1.2rem);
+}
+.order-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background: #fafafa;
+    border-radius: 0.8rem;
+}
+.order-item div:not(.item-description) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.7rem 0.9rem;
+    max-width: calc(100% - 1.2rem);
+}
+.order-item.is-break {
+    background: repeating-linear-gradient(
+        45deg,
+        #f0f0f0,
+        #f0f0f0 10px,
+        #e8e8e8 10px,
+        #e8e8e8 20px
+    );
+}
+
+.drag-handle {
+    color: #aaa;
+    cursor: grab;
+    touch-action: none;
+}
+
+.item-label {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 600;
+}
+.class-tag {
+    font-size: 0.75rem;
+    border-radius: 0.4rem;
+    padding: 0.1rem 0.4rem;
+    margin-left: 0.4rem;
+}
+textarea {
+    flex: 1;
+    background: transparent;
+    font-size: 0.9rem;
+    resize: vertical;
+    overflow: hidden;
+}
+.break-icon {
+    color: #888;
+    font-size: 1.1rem;
+    width: 1.1rem;
+    height: 1.1rem;
+    flex-shrink: 0;
+}
+
+.scoring-tag {
+    font-size: 0.75rem;
+    border-radius: 0.4rem;
+    padding: 0.15rem 0.5rem;
+    font-weight: 700;
+}
+.tag-jury {
+    background: rgba(49, 61, 143, 0.1);
+    color: var(--csipetke-primary);
+}
+.tag-organizer {
+    background: rgba(0, 120, 0, 0.1);
+    color: #1a6b1a;
+}
+
+.delete-btn {
+    background: transparent;
+    border: none;
+    color: #a33;
+    cursor: pointer;
+    padding: 0.3rem;
+    border-radius: 50%;
+    transition: background 0.2s ease;
+}
+.delete-btn:hover {
+    background: rgba(150, 0, 0, 0.08);
+}
+
+.edit-btn {
+    background: transparent;
+    border: none;
+    color: #cc0;
+    cursor: pointer;
+    padding: 0.3rem;
+    border-radius: 50%;
+    transition: background 0.2s ease;
+}
+.edit-btn:hover {
+    background: rgba(150, 150, 0, 0.08);
+}
+
+.delete-confirm {
+    display: flex;
+    gap: 0.4rem;
+}
+.delete-confirm button {
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+.delete-confirm .cancel {
+    background: #eee;
+}
+.delete-confirm .confirm {
+    background: rgba(200, 0, 0, 0.85);
+    color: #fff;
+}
+
+.history-panel.small {
+    max-width: 420px;
+}
+
+/* CDK drag preview / placeholder */
+.cdk-drag-preview {
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 20px;
+    border-radius: 0.8rem;
+}
+.cdk-drag-placeholder {
+    opacity: 0.3;
+    cursor: grab;
+}
+.cdk-drag-animating {
+    transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+.order-list.cdk-drop-list-dragging .order-item:not(.cdk-drag-placeholder) {
+    transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+.btn {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 10px;
+    margin: auto;
+    display: block;
+    border: 1px solid #ccc;
+    background-color: rgba(0, 150, 0, 0.5);
+    border-radius: 10px;
+    font-variant: normal;
+    font-size: 1.2rem;
+}
+.btn:hover {
+    background-color: rgba(0, 150, 0, 0.8);
+}
+.btn mat-icon {
+    margin-bottom: -5px;
+}
+.item-description {
+    display: block;
+    overflow: hidden;
+    white-space: normal;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+    width: calc(100% - 0.8rem);
+    margin: auto;
+    text-align: center;
+}

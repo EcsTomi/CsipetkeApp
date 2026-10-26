@@ -1,0 +1,237 @@
+.tabBar {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.2rem;
+}
+.tabBar button {
+    cursor: pointer;
+    border: 1px solid #ccc;
+    background: #fff;
+    color: #333;
+    padding: 0.5rem 1rem;
+    border-radius: 0.6rem;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+.tabBar button.active {
+    background: var(--csipetke-primary);
+    border-color: var(--csipetke-primary);
+    color: #fff;
+}
+
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    align-items: flex-end;
+    margin-bottom: 1.5rem;
+    width: 100%;
+}
+.filters .g {
+    display: flex;
+    flex-direction: column;
+    min-width: 140px;
+}
+.filterBtns {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* --- Szerepkörök --- */
+
+.roleLayout {
+    display: flex;
+    gap: 1.2rem;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    max-width: 100%;
+}
+
+.roleList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 180px;
+}
+
+.roleChip {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    background: #fafafa;
+    border-radius: 0.6rem;
+    padding: 0.5rem 0.8rem;
+    transition: all 0.2s ease;
+}
+.roleChip:hover {
+    border-color: var(--csipetke-primary);
+}
+.roleChip.selected {
+    border-color: var(--csipetke-primary);
+}
+.roleChipName {
+    font-weight: 700;
+}
+.roleChipCode {
+    font-size: 0.75rem;
+    color: #888;
+    font-family: monospace;
+}
+
+.rolePermissions {
+    flex: 1;
+    min-width: 280px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.permGroup {
+    margin-bottom: 1.2rem;
+    max-width: calc(100% - 0.8rem);
+}
+.permGroup h3 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--csipetke-primary);
+    margin: 0 0 0.5rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.3rem;
+}
+
+.permRow {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    padding: 0.35rem 0.4rem;
+    cursor: pointer;
+    flex-wrap: wrap;
+    margin-bottom: 0.5rem;
+    width: max-content;
+    max-width: calc(100% - 0.8rem);
+}
+.permRow input[type='checkbox'] {
+    accent-color: var(--csipetke-primary);
+    width: 1.05rem;
+    height: 1.05rem;
+    flex-shrink: 0;
+}
+.permName {
+    font-weight: 600;
+}
+.permDesc {
+    color: #888;
+    font-size: 0.82rem;
+}
+/* --- Felhasználók --- */
+
+.userSummary {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: #888;
+}
+.userSummary .totalUsers,
+.userSummary .activeUsers {
+    display: flex;
+    align-items: baseline;
+    gap: 0.3rem;
+}
+.userSummary .count {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--csipetke-primary);
+}
+.userSummary .activeUsers .count {
+    color: #2e8b57; /* zöld, összhangban a userRow .picture.active jelöléssel */
+}
+
+.userList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.userRow {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    background: #fafafa;
+    border: none;
+    border-radius: 0.6rem;
+    padding: 0.5rem 0.9rem;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s ease;
+    flex-wrap: wrap;
+    width: 100%;
+    color: black !important;
+}
+.userRow:hover {
+    background: rgba(49, 61, 143, 0.08);
+}
+.userRow.blocked {
+    opacity: 0.6;
+}
+.userRow .picture {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+}
+.userRow .picture.active {
+    box-shadow: 0 0 1px 3px #fff, 0 0 2px 6px green;
+}
+.userName {
+    font-weight: 700;
+}
+.userMeta {
+    color: #888;
+    font-size: 0.85rem;
+}
+.userRole {
+    margin-left: auto;
+    font-size: 0.8rem;
+    background: rgba(49, 61, 143, 0.1);
+    color: var(--csipetke-primary);
+    border-radius: 0.4rem;
+    padding: 0.1rem 0.5rem;
+}
+.userBlocked {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    background: #a33;
+    color: #fff;
+    border-radius: 1rem;
+    padding: 0.1rem 0.5rem;
+}
+.userStatus {
+    display: none;
+}
+.userStatus.active {
+    display: inline-block;
+    color: green;
+}
+button {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0.4rem 0.6rem;
+    border-radius: 0.4rem;
+    border: 1px solid #ccc;
+    color: #333;
+    background: #fff;
+}
+button:hover {
+    background: var(--csipetke-primary);
+    color: #fff;
+}
+.btns {
+    gap: 1rem;
+    width: 100%;
+}

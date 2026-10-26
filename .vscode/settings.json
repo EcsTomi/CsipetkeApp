@@ -1,0 +1,7 @@
+{
+    "python.analysis.extraPaths": ["./backend"],
+    "java.compile.nullAnalysis.mode": "automatic",
+    "chat.tools.terminal.autoApprove": {
+        "corepack": true
+    }
+}

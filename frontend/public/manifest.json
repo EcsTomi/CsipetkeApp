@@ -1,0 +1,33 @@
+{
+  "short_name": "Csipetke",
+  "name": "Csipetke app",
+  "icons": [
+    {
+      "src": "logo.png",
+      "type": "image/png",
+      "sizes": "800x800"
+    }
+  ],
+  "id": "/",
+  "start_url": "/",
+  "background_color": "#313d8f",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#313d8f",
+  "description": "A Lovassy László Gimnázium Csipetke programjának applikációja.",
+  "orientation": "portrait",
+  "screenshots": [
+    {
+      "src": "screenshot-mobile.png",
+      "sizes": "1440x2960",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "screenshot-desktop.png",
+      "sizes": "2732x2088",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ]
+}

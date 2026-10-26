@@ -1,0 +1,74 @@
+.NgxEditor__Wrapper {
+    width: calc(100% - 0.8rem);
+    margin-bottom: 1.3rem;
+}
+:host ::ng-deep .NgxEditor__MenuBar {
+    width: 100%;
+}
+:host ::ng-deep .NgxEditor__Seperator {
+    width: 0px;
+    padding: 0;
+    margin: 0;
+}
+:host ::ng-deep .NgxEditor, :host ::ng-deep .NgxEditor__Content {
+    width: calc(100% - 0.2rem);
+    padding: 0.1rem;
+}
+@media (max-width: 620px) {
+    :host ::ng-deep .NgxEditor__MenuBar {
+        justify-content: space-around;
+        max-width: 400px;
+        margin: auto;
+    }
+    :host ::ng-deep .NgxEditor__Seperator:nth-of-type(2) {
+        width: 100%;
+        padding: 0;
+    }
+}
+@media (max-width: 360px) {
+    :host ::ng-deep .NgxEditor__Seperator {
+        width: 100%;
+        padding: 0;
+    }
+}
+.placement-editor {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.placement-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.placement-input {
+    width: 3.5rem;
+}
+.points-input {
+    width: 5rem;
+}
+.remove-row-btn {
+    background: transparent;
+    border: none;
+    color: #a33;
+    cursor: pointer;
+    padding: 0.2rem;
+    border-radius: 50%;
+    margin-left: auto;
+}
+.remove-row-btn:hover {
+    background: rgba(150, 0, 0, 0.08);
+}
+.add-row-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    align-self: flex-start;
+    background: transparent;
+    border: 1px dashed var(--csipetke-primary);
+    color: var(--csipetke-primary);
+    border-radius: 0.5rem;
+    padding: 0.3rem 0.7rem;
+    cursor: pointer;
+    font-size: 0.85rem;
+}

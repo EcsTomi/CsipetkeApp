@@ -1,0 +1,9 @@
+<div class="chart-wrapper">
+    @if (history().length === 0) {
+        <p class="hint">Még nincs rögzített szavazási előzmény.</p>
+    } @else {
+        <div class="canvas-box">
+            <canvas #canvas></canvas>
+        </div>
+    }
+</div>

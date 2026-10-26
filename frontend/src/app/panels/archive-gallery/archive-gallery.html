@@ -1,0 +1,82 @@
+<section class="archive-section">
+    <h2 style="text-align:center">Csipetke ízelítő</h2>
+
+    @if (isLoading()) {
+        <p class="hint">Betöltés...</p>
+    } @else if (photos().length === 0) {
+        <p class="hint">Még nincsenek képek itt.</p>
+    } @else {
+        <div class="archive-grid">
+            @for (photo of photos(); track photo.id; let i = $index) {
+                <button type="button" class="archive-thumb" (click)="open(i)">
+                    <img
+                        [ngSrc]="photo.stored_hash"
+                        [width]="photo.width"
+                        [height]="photo.height"
+                        [priority]="i < 4"
+                        sizes="(max-width: 600px) 50vw, (max-width: 1000px) 33vw, 25vw"
+                        [alt]="photo.caption || photo.original_filename"
+                    >
+                </button>
+            }
+        </div>
+    }
+    @if(auth.isPermitted("archive.upload")) {
+        <archive-upload-panel></archive-upload-panel>
+    }
+</section>
+
+@if (activePhoto(); as photo) {
+    <div class="archive-lightbox" (click)="close()">
+        @if(prevAvailable()) {
+            <!-- Előző kép gomb -->
+            <button type="button" class="nav-btn prev" (click)="prev($event)" aria-label="Előző">
+                <mat-icon class="material-symbols-rounded">chevron_left</mat-icon>
+            </button>
+        }
+
+        <!-- Kép és képaláírás tároló -->
+        <div class="lightbox-content">
+            @if(!isChanging()) { 
+                @for (p of [photo]; track p.id) {
+                    <img
+                        [ngSrc]="p.stored_hash"
+                        [width]="p.width"
+                        [height]="p.height"
+                        priority
+                        sizes="90vw"
+                        [alt]="p.caption || p.original_filename"
+                        (click)="$event.stopPropagation()"
+                    >
+                }
+            }
+            @if (photo.caption) { <p class="caption">{{ photo.caption }}</p> }
+        </div>
+        @if(nextAvailable()) {
+            <!-- Következő kép gomb -->
+            <button type="button" class="nav-btn next" (click)="next($event)" aria-label="Következő">
+                <mat-icon class="material-symbols-rounded">chevron_right</mat-icon>
+            </button>
+        }
+
+        <!-- Bezárás gomb -->
+        <button type="button" class="close-btn" (click)="close()">
+            <mat-icon class="material-symbols-rounded">close</mat-icon>
+        </button>
+
+        @if(auth.isPermitted("archive.upload")) {
+            <!-- Törlés gomb -->
+            @if(confirmDelete() == 0) {
+                <button type="button" class="delete-btn" (click)="removeConfirm($event)">
+                    <mat-icon class="material-symbols-rounded">delete</mat-icon>
+                </button>
+            } @else {
+                <button type="button" class="delete-btn confirm" (click)="remove($event)" disabled>
+                    <span class="delete-text">Törlés</span>
+                    <mat-icon class="material-symbols-rounded">delete</mat-icon>
+                </button>
+            }
+        }
+        
+    </div>
+}

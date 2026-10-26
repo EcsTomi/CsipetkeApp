@@ -1,0 +1,32 @@
+@if (!isLoading()) {
+    @if (auth.isPermitted("vote.edit")) {
+        <div class="settingsHeader">
+            <p>{{ votes().length }} szavazás <span class="small">({{ activeCount() }} aktív)</span></p>
+            <button (click)="createTask()" mat-icon-button>
+                <mat-icon aria-hidden="true" class="material-symbols-rounded">add</mat-icon>
+            </button>
+        </div>
+    }
+    @if (votes().length) {
+        <div class="group">
+            @for (vote of votes(); track $index) {
+                <section [className]="vote.is_open ? '' : 'notActive' + (vote.is_deleted ? ' deleted' : '')" (click)="selectTask(vote.id)">
+                    <h2>{{ vote.name }}</h2>
+                    <div class="group">
+                        @for (option of vote.options; track $index) {
+                            @if(getOptionImageUrl(vote.id, option.id)) {
+                                <img [src]="getOptionImageUrl(vote.id, option.id)" class="picture">
+                            } @else {
+                                <div class="img_place"></div>
+                            }
+                        }
+                    </div>
+                </section>
+            }
+        </div>
+    } @else {
+        <section>
+            <h2 style="text-align: center">Nincs szavazás</h2>
+        </section>
+    }
+}

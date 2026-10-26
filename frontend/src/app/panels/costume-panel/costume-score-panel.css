@@ -1,0 +1,166 @@
+/* costume-score-panel.css */
+.history-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    z-index: 1000;
+    padding: 2rem 1rem;
+    overflow-y: auto;
+}
+
+.history-panel {
+    background: #fff;
+    border-radius: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
+    width: 100%;
+    max-width: 480px;
+    max-height: calc(100vh - 4rem);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.history-panel .settingsHeader {
+    margin: 0;
+    padding: 0.8rem 1rem;
+    border-radius: 1rem 1rem 0 0;
+}
+.history-panel .settingsHeader p {
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.history-body {
+    padding: 1rem 1.3rem;
+    overflow-y: auto;
+}
+
+.class-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.2rem;
+}
+.class-tab {
+    flex: 1;
+    padding: 0.6rem 0;
+    border: 1px solid #ddd;
+    border-radius: 0.6rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+}
+.class-tab .check {
+    font-size: 1rem;
+    width: 1rem;
+    height: 1rem;
+}
+
+.criteria-list {
+    list-style: none;
+    margin: 0 0 1rem;
+    padding: 0;
+}
+.criteria-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+.criteria-label {
+    font-size: 0.95rem;
+}
+
+.toggle {
+    border: 1px solid #ccc;
+    background: #f5f5f5;
+    color: #555;
+    border-radius: 0.6rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    cursor: pointer;
+    min-width: 90px;
+    transition: all 0.2s ease;
+}
+.toggle.on {
+    background: rgba(0, 120, 0, 0.12);
+    border-color: #1a6b1a;
+    color: #1a6b1a;
+}
+
+.counter {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+.counter button {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+    background: #fafafa;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+.counter span {
+    min-width: 70px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+.counter button mat-icon {
+    margin-left: -2px;
+    margin-bottom: -3px;
+}
+
+input[type="text"] {
+    width: calc(100% - 1rem);
+    padding: 0.5rem;
+    margin: 0.4rem 0 1rem;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1rem;
+    padding: 0.6rem 0;
+    border-top: 2px solid #eee;
+    margin-bottom: 1rem;
+}
+.total-row b {
+    color: #1a6b1a;
+}
+.total-row b.negative {
+    color: #a33;
+}
+
+.save-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    background: var(--csipetke-primary);
+    color: #fff;
+    border: none;
+    border-radius: 0.6rem;
+    padding: 0.7rem;
+    font-size: 1rem;
+    cursor: pointer;
+}
+.save-btn:disabled {
+    opacity: 0.6;
+    cursor: default;
+}

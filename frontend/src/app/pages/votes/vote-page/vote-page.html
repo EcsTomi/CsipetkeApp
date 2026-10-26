@@ -1,0 +1,95 @@
+@if (vote()) {
+    <section [classList]="'full' + (vote()?.is_deleted ? ' deleted' : '')">
+        @if (auth.isPermitted("vote.edit")) {
+            <div class="settingsHeader">
+                <button mat-icon-button (click)="back()">
+                    <mat-icon aria-hidden="true" class="material-symbols-rounded">arrow_back</mat-icon>
+                </button>
+                <p>Utoljára módosította: 
+                    <span><img src="{{ vote()?.modified_by!.picture }}" class="picture"> {{ vote()?.modified_by!.name }}</span>
+                </p>
+                <button (click)="modify()" mat-icon-button>
+                    <mat-icon aria-hidden="true" class="material-symbols-rounded">edit</mat-icon>
+                </button>
+            </div>
+            <h2 style="text-align: center; margin-top:0">{{ vote()?.name }}</h2>
+        } @else {
+            <div class="settingsHeader">
+                <button mat-icon-button (click)="back()">
+                    <mat-icon aria-hidden="true" class="material-symbols-rounded">arrow_back</mat-icon>
+                </button>
+                <h2>{{ vote()?.name }}</h2>
+            </div>
+        }
+        @if(isVisible(vote()!.visible_from!)) {
+            
+        } @else if(isVisible(vote()!.available_from!)) {
+            <time-left-panel [datetime]="vote()!.available_from!" (zero)="refresh(2)"></time-left-panel>
+        } @else if(vote()?.deadline) {
+            <time-left-panel [datetime]="vote()!.deadline!" (zero)="refresh(3)"></time-left-panel>
+        }
+
+        @if (!vote()!.is_open && vote()?.deadline) {
+            @if (isBefore()) {
+                <div class="vote-status closed">
+                    <mat-icon class="material-symbols-rounded">schedule</mat-icon>
+                    A szavazás még nem kezdődött el
+                </div>
+            } @else {
+                <div class="vote-status closed">
+                    <mat-icon class="material-symbols-rounded">lock</mat-icon>
+                    Szavazás lezárult
+                </div>
+            }
+        } @else if (vote()!.is_open) {
+            <div class="vote-status open">
+                <mat-icon class="material-symbols-rounded">how_to_vote</mat-icon>
+                Szavazás folyamatban
+            </div>
+        }
+
+        @if(vote()?.options && vote()!.options.length > 0) {
+            <div class="group">
+            @for (option of vote()!.options; track $index) {
+                <section (click)="voteOn(option.id)" [classList]="(isMyAllocation(option.id) ? 'myAllocation ' : '') + (vote()!.is_open ? '' : 'notActive')">
+                    <div>
+                        <h2>{{ option.name }}</h2>
+                        <div class="img_wrap">
+                            @if (getOptionImageUrl(option)) {
+                                <img [src]="getOptionImageUrl(option)" [alt]="option.name" class="picture">
+                            } @else {
+                                <div class="img_place"></div>
+                            }
+                            @if (!vote()!.is_open) {
+                                <mat-icon class="material-symbols-rounded lock-badge">lock</mat-icon>
+                            }
+                        </div>
+                        <h3>{{ results().find(x => x.option_id == option.id)?.total }}</h3>
+                    </div>
+                </section>
+            }
+            </div>
+        }
+        @if(auth.isPermitted("vote.hidden")) {
+            <p style="text-align: left">Látható:<br>{{ vote()?.visible_from_human }}</p>
+        } @else {
+            <p style="text-align: left">Megjelent:<br>{{ vote()?.visible_from_human }}</p>
+        }
+        <p style="text-align: left">Szavazás kezdete:<br>{{ vote()?.available_from_human }}</p>
+        @if(vote()?.deadline) {
+            <p style="text-align: left">Szavazás vége:<br>{{ vote()?.deadline_human }}</p>
+        }
+        @if(history().length > 0) {
+            <br>
+            <h2 style="text-align: center">Szavazás állása</h2>
+            <vote-result-chart [results]="results()" [options]="vote()!.options"></vote-result-chart>
+            <br><br>
+            <vote-history-chart [history]="history()" [options]="vote()!.options"></vote-history-chart>
+        }
+    </section>
+    
+} @else if(!isLoading()) {
+    <section class="full">
+        <h2 style="text-align: center">Nincs ilyen szavazás</h2>
+    </section>
+}

@@ -1,0 +1,154 @@
+.permission-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    z-index: 1000;
+    padding: 2rem 1rem;
+    overflow-y: auto;
+}
+
+.permission-panel {
+    background: #fff;
+    border-radius: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
+    width: 100%;
+    max-width: 640px;
+    max-height: calc(100vh - 4rem);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.permission-panel .settingsHeader {
+    margin: 0;
+    padding: 0.8rem 1rem;
+    border-radius: 1rem 1rem 0 0;
+}
+.permission-panel .settingsHeader p {
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.permission-body {
+    padding: 1rem 1.3rem;
+    overflow-y: auto;
+}
+
+.hint {
+    color: #777;
+    font-size: 0.9rem;
+}
+.hint.small {
+    margin: 0.2rem 0 0.9rem;
+}
+
+.g {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.8rem;
+}
+.g select {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.6rem;
+    border-radius: 0.4rem;
+    border: 1px solid #ccc;
+    color: #333;
+    background: #fff;
+}
+
+.permGroup {
+    margin-bottom: 1.2rem;
+}
+.permGroup h3 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--csipetke-primary);
+    margin: 0 0 0.5rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.3rem;
+}
+
+.permRow {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.35rem 0;
+    cursor: pointer;
+    flex-wrap: wrap;
+}
+.permRow input[type='checkbox'] {
+    accent-color: var(--csipetke-primary);
+    width: 1.05rem;
+    height: 1.05rem;
+    flex-shrink: 0;
+}
+.permRow.default {
+    background: rgba(49, 61, 43, 0.1);
+    border-radius: 0.4rem;
+}
+.permRow.overridden {
+    background: rgba(49, 61, 143, 0.05);
+    border-radius: 0.4rem;
+    padding-left: 0.6rem;
+}
+
+.permName {
+    font-weight: 600;
+}
+
+.overrideTag {
+    margin-left: auto;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    background: rgba(150, 0, 0, 0.1);
+    color: #a33;
+    border-radius: 1rem;
+    padding: 0.1rem 0.5rem;
+}
+.overrideTag.granted {
+    background: rgba(0, 120, 0, 0.12);
+    color: #1a6b1a;
+}
+
+.resetBtn {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: #888;
+    display: flex;
+    align-items: center;
+    padding: 0.1rem;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+.resetBtn:hover {
+    color: var(--csipetke-primary);
+    background: rgba(49, 61, 143, 0.1);
+}
+.resetBtn mat-icon {
+    font-size: 1.1rem;
+    width: 1.1rem;
+    height: 1.1rem;
+}
+button {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0.4rem 0.6rem;
+    border-radius: 0.4rem;
+    border: 1px solid #ccc;
+    color: #333;
+    background: #fff;
+}
+button:hover {
+    background: var(--csipetke-primary);
+    color: #fff;
+}
+.btns {
+    gap: 1rem;
+    width: 100%;
+}

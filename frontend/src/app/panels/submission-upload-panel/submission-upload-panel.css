@@ -1,0 +1,140 @@
+/* task-submission-upload.css */
+.upload-zone {
+    border: 2px dashed #d0d0d8;
+    border-radius: 1rem;
+    padding: 1.8rem 1.2rem;
+    text-align: center;
+    background: #fafafc;
+    transition: all 0.2s ease;
+    position: relative;
+    width: calc(100% - 2.4rem);
+}
+
+.upload-zone.drag-over {
+    border-color: var(--csipetke-primary);
+    background: rgba(79, 70, 229, 0.06);
+}
+
+.drop-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    color: #666;
+}
+.drop-label.disabled {
+    cursor: not-allowed;
+}
+
+.drop-label mat-icon {
+    font-size: 2.4rem;
+    width: 2.4rem;
+    height: 2.4rem;
+    color: var(--csipetke-primary);
+}
+
+.drop-label p {
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+}
+
+.progress-wrap mat-icon.spin {
+    color: var(--csipetke-primary);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.progress-wrap span {
+    font-size: 0.85rem;
+    color: #666;
+    min-width: 2.5rem;
+    text-align: right;
+}
+
+.submitted {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    text-align: left;
+    max-width: calc(100% - 0.8rem);
+    width: 100%;
+}
+
+.submitted mat-icon {
+    color: #1a6b1a;
+    font-size: 1.8rem;
+    width: 1.8rem;
+    height: 1.8rem;
+    flex-shrink: 0;
+}
+
+.submitted .info {
+    flex: 1;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.submitted .info p {
+    margin: 0;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.8rem;
+}
+
+.submitted .info span {
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.replace-btn {
+    flex-shrink: 0;
+    cursor: pointer;
+    border: 1px solid var(--csipetke-primary);
+    color: var(--csipetke-primary);
+    border-radius: 0.6rem;
+    padding: 0.35rem 0.8rem;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.replace-btn:hover {
+    background: var(--csipetke-primary);
+    color: #fff;
+}
+
+.upload-error {
+    margin: 0.7rem 0 0;
+    color: #a33;
+    font-size: 0.85rem;
+}
+
+@media (max-width: 480px) {
+    .upload-zone {
+        padding: 1.2rem 0.8rem;
+    }
+    .submitted {
+        flex-wrap: wrap;
+    }
+}
+.btns2 {
+    display: flex;
+    gap: 0.5rem;
+    flex-direction: column;
+}
+input[type="file"] {
+    display: none;
+}

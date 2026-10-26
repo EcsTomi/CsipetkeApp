@@ -1,0 +1,621 @@
+:root {
+  --csipetke-primary: #313d8f;
+  --csipetke-font: 'Open Sans Condensed', Helvetica, Arial, Lucida, sans-serif;
+}
+body:has(header.winner-a) {
+    background: linear-gradient(45deg, #fff, #db2b2780, #fff);
+    background-attachment: fixed;
+}
+body:has(header.winner-b) {
+    background: linear-gradient(45deg, #fff, #fec91680, #fff);
+    background-attachment: fixed;
+}
+body:has(header.winner-c) {
+    background: linear-gradient(45deg, #fff, #2f6ccb80, #fff);
+    background-attachment: fixed;
+}
+body:has(header.winner-d) {
+    background: linear-gradient(45deg, #fff, #63bd4180, #fff);
+    background-attachment: fixed;
+}
+html {
+    min-height: 100vh;
+    overscroll-behavior: none;
+}
+
+app-root {
+    min-height: 100vh;
+    display: block;
+}
+
+body {
+    font-family: var(--csipetke-font);
+    overscroll-behavior: none;
+    padding-bottom: 4rem;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+.title {
+    text-align: center;
+    font-weight: 400;
+    font-size: 2rem;
+    margin: 1rem;
+}
+
+section {
+    width: calc(100% - 100px);
+    max-width: 730px;
+    margin: auto;
+    margin-top: 1.3rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    font-size: 1rem;
+    line-height: 1.5;
+}
+@media (max-width: 730px) {
+    section.full {
+        width: calc(100% - 2rem);
+        max-width: 100%;
+        margin: 0;
+        border-radius: 0;
+        padding: 1rem;
+    }
+    form.full {
+        width: 100%;
+        padding: 0;
+    }
+}
+.data {
+    letter-spacing: 0.1rem;
+}
+section i {
+    font-style: normal;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #777;
+    font-size: 0.8rem;
+}
+section p {
+    margin-bottom: 1rem;
+}
+section div {
+    padding: 0.4rem;
+    width: max-content;
+    display: inline-block;
+    max-width: 100%;
+}
+div.small {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 1rem;
+    margin: 1.3rem;
+    max-width: 99%;
+}
+div.small section {
+    min-width: min-content;
+    width: 100%;
+    margin: 0rem;
+    padding: 0.3rem;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+div.small section b {
+    display: block;
+    text-align: center;
+    font-weight: 800;
+    font-size: 2rem;
+    margin: auto;
+    
+}
+
+.tokenText {
+    word-break: break-all;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: monospace;
+    font-size: 1.1rem;
+}
+.group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.3rem;
+    margin: 1.3rem;
+    justify-content: center;
+}
+.group section {
+    margin: 0;
+    height: auto;
+    width: 300px;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+@media (max-width: 730px) {
+    .group {
+        flex-direction: column;
+        width: calc(100% - 2.6rem);
+    }
+    .group section {
+        width: calc(100% - 2.6rem);
+    }
+}
+.group section:hover:not(.noClick) {
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.4);
+    transform: translateY(-2px) scale(1.04);
+}
+
+.settingsHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    width: calc(100% - 2rem);
+    border-bottom: 1px solid #777;
+    background-color: white;
+    margin-bottom: 1rem;
+    padding: 0.3rem 1rem;
+    font-size: 1rem;
+    gap: 0.5rem;
+}
+section .settingsHeader {
+    margin: -1rem;
+    margin-bottom: 1rem;
+    padding-right: 0.5rem;
+    width: calc(100% + 0.5rem);
+    max-width: none;
+    border-radius: 1rem 1rem 0 0;
+    box-shadow: none;
+}
+@media (max-width: 730px) {
+    section.full .settingsHeader {
+        width: calc(100% + 0.5rem);
+        padding-right: 0.5rem;
+        border-radius: 0;
+    }
+}
+
+.settingsHeader p {
+    margin: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.1rem;
+    flex-wrap: wrap;
+}
+.settingsHeader p span {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    width: max-content;
+}
+.settingsHeader p span .picture {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-left: 0.5rem;
+}
+.settingsHeader button {
+    border: none;
+    background-color: white;
+    padding: 0.3rem 0.3rem;
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    min-height: 40px;
+    border-radius: 50%;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 12px;
+    cursor: pointer;
+    transition: all 0.3s ease, border-radius 0s ease;
+    z-index: 4;
+}
+.settingsHeader button mat-icon {
+    font-size: 1.5rem;
+    margin-bottom: -2px;
+}
+.settingsHeader button:hover {
+    background-color: rgba(200, 200, 200, 0.4);
+}
+
+.settingsHeader button.history-toggle {
+    min-width: fit-content;
+    width: fit-content;
+    padding: 0.3rem 1rem;
+    border-radius: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+@media (max-width: 500px) {
+    .settingsHeader p {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .settingsHeader button.history-toggle {
+        font-size: 0;
+        gap: 0;
+    }
+}
+
+
+form {
+    padding: 1rem;
+    max-width: 730px;
+    width: calc(100% - 100px);
+    margin: auto;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    border-radius: 20px;
+    background-color: #fff;
+}
+form h2 {
+    display: inline-block;
+    margin: 0;
+    padding: 10px;
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+.btns {
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row;
+    padding-bottom: 1rem;
+}
+.btns mat-icon {
+    margin-bottom: -6px;
+}
+form section {
+    display: block;
+    width: calc(100% - 3rem);
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    background: transparent;
+    box-shadow: none;
+    padding: 0.5rem;
+    padding-bottom: 0;
+    padding-top: 0;
+    
+    letter-spacing: normal;
+}
+@media (max-width: 730px) {
+    form {
+        width: calc(100% - 2rem);
+        border-radius: 0;
+    }
+}
+form div.g {
+    display: inline-block;
+    max-width: calc(100% - 0.8rem);
+    padding-bottom: 0;
+}
+form section i {
+    font-variant: small-caps;
+}
+input, textarea, select {
+    display: block;
+    width: calc(100% - 20px);
+    field-sizing: content;
+    margin-top: 0.25rem;
+    margin-bottom: 1.3rem;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 1rem;
+    
+    font-variant: normal;
+}
+input[type="datetime-local"] {
+    -webkit-appearance: none;
+    appearance: none;
+    color: black;
+    background-color: white;
+    min-height: 1rem;
+}
+input:disabled {
+    background-color: #ccc;
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+@media (max-width: 730px) {
+    input, textarea, select {
+        font-size: 0.9rem;
+        padding: 5px;
+    }
+}
+
+
+
+form button[type="submit"], .btns button, .confirm button {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 10px;
+    margin: auto;
+    display: block;
+    border: 1px solid #ccc;
+    background-color: rgba(0, 150, 0, 0.5);
+    border-radius: 10px;
+    font-variant: normal;
+    font-size: 1.2rem;
+}
+form button[type="submit"]:hover, .btns button:hover {
+    background-color: rgba(0, 120, 0, 1);
+    color: white;
+    padding: 10px;
+}
+form button mat-icon, .btns button mat-icon {
+    margin-bottom: -5px;
+    width: 34px;
+    transition: all 0.3s ease;
+}
+
+form button.cancel, .btns button.cancel {
+    background-color: rgba(150, 0, 0, 0.5);
+}
+form button.cancel:hover, .btns button.cancel:hover {
+    background-color: rgba(120, 0, 0, 1);
+}
+
+form button.delete, .btns button.delete {
+    background-color: rgba(80, 0, 0, 1);
+    color: white
+}
+form button.delete:hover, .btns button.delete:hover {
+    background-color: rgba(0, 0, 0, 1);
+}
+
+form label {
+    margin-right: 1rem;
+}
+
+input[type="radio"] {
+    display: none;
+}
+input[type="radio"] + label {
+    display: inline-block;
+    font-size: 0.85rem;
+    padding: 0.3rem 0.6rem;
+    margin: 1px;
+    margin-bottom: 0.3rem;
+    border-radius: 0rem;
+    background-color: #f0f0f0;
+    color: #000;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+input[type="radio"].first + label {
+    border-top-left-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+}
+input[type="radio"].last + label {
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+}
+input[type="radio"]:checked + label {
+    background-color: var(--csipetke-primary);
+    color: #fff;
+}
+input[type="radio"].not:checked + label {
+    background-color: gray;
+}
+
+
+input[type="checkbox"] {
+    display: none;
+}
+input[type="checkbox"] + label {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 0.5rem;
+    background-color: #f0f0f0;
+    color: #000;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 0.1rem;
+    font-size: 0.85rem;
+}
+input[type="checkbox"] + label:first-of-type {
+    border-top-left-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+}
+input[type="checkbox"]:checked + label {
+    background-color: var(--csipetke-primary);
+    color: #fff;
+}
+
+p.note {
+    font-size: 0.8rem;
+}
+
+.classA:not(h2) {
+    background-color: #db2b27;
+    color: white;
+}
+h2.classA {
+    color: #db2b27;
+}
+.classB:not(h2) {
+    background-color: #fec916;
+    color: white;
+}
+h2.classB {
+    color: #fec916;
+}
+.classC:not(h2) {
+    background-color: #2f6ccb;
+    color: white;
+}
+h2.classC {
+    color: #2f6ccb;
+}
+.classD:not(h2) {
+    background-color: #63bd41;
+    color: white;
+}
+h2.classD {
+    color: #63bd41;
+}
+.class-card h2 {
+    text-align: center;
+    padding: 0rem;
+    margin: 0rem;
+    border-radius: 0.5rem;
+}
+.class-card:not(.smaller) h2 {
+    font-size: 3rem;
+}
+h2.classA, h2.classB, h2.classC, h2.classD {
+    font-size: 3rem;
+    text-align: center;
+    padding: 0rem;
+    margin: 0rem;
+    border-radius: 0.5rem;
+}
+.settingsHeader.classA, .settingsHeader.classB, .settingsHeader.classC, .settingsHeader.classD {
+    text-align: center
+}
+.settingsHeader.classA p, .settingsHeader.classB p, .settingsHeader.classC p, .settingsHeader.classD p {
+    justify-content: center;
+    font-size: 2rem;
+}
+
+
+.group:has(.class-card):not(section) {
+    width: calc(232px * 2 + 1.3rem);
+    margin: auto;
+    flex-direction: row !important;
+}
+section.group {
+    display: flex;
+    flex-direction: row !important;
+    margin: auto;
+    justify-content: space-around;
+}
+.class-card {
+    cursor: pointer;
+    aspect-ratio: 1;
+    width: 200px !important;
+}
+@media (max-width: 600px) {
+    .group:has(.class-card):not(section) {
+        width: calc(100% - 2rem);
+        margin: auto;
+        flex-direction: row !important;
+    }
+    .class-card {
+        width: calc(50% - 2.7rem) !important;
+    }
+    .group:has(.smaller) {
+        flex-wrap: wrap;
+    }
+    .class-card .hint {
+        margin: -5px;
+    }
+}
+.class-card.locked:hover {
+    box-shadow: none;
+    transform: none;
+}
+.class-card.locked {
+    cursor: default;
+    opacity: 0.75;
+}
+.class-card .points {
+    font-size: 2.3rem;
+    margin: auto;
+    display: block;
+    text-align: center;
+}
+.class-card .hint {
+    color: white;
+    font-size: 1rem;
+    margin: auto;
+    display: block;
+    text-align: center;
+}
+.deleted {
+    opacity: 0.6;
+    background-color: #fcdcdc !important;
+}
+
+
+/* Overlay/panel alap ugyanaz, mint task-history-panel.css */
+.history-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    z-index: 1000;
+    padding: 2rem 1rem;
+    overflow-y: auto;
+}
+.history-panel {
+    background: #fff;
+    border-radius: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
+    width: 100%;
+    max-width: 900px;
+    max-height: calc(100vh - 4rem);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.history-panel .settingsHeader {
+    margin: 0;
+    padding: 0.8rem 1rem;
+    border-radius: 1rem 1rem 0 0;
+}
+.history-panel .settingsHeader p {
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+.history-body {
+    padding: 1rem 1.3rem 1.5rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.frozen-banner {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: center;
+    background: rgba(150, 100, 0, 0.1);
+    color: #a37a00;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
+    border-radius: 0.7rem;
+    padding: 0.7rem 1rem;
+    margin-bottom: 1.2rem;
+    max-width: calc(100% - 2rem);
+    border-radius: 0;
+}
+.frozen-banner mat-icon {
+    flex-shrink: 0;
+}
+
+
+/* --- Signal Forms validációs visszajelzés ---
+   A Signal Forms (kísérleti API) még nem rakja fel automatikusan az
+   ng-valid/ng-invalid osztályokat, ezért [class.invalid] bindinggel
+   tesszük ezt meg a template-ben. */
+input.invalid,
+input.invalid:focus {
+    border-color: #a33;
+    outline: none;
+}
+.field-error {
+    color: #a33;
+    font-size: 0.8rem;
+    margin: -0.3rem 0 0.6rem;
+}

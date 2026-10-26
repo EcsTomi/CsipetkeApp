@@ -1,0 +1,83 @@
+@if (showAddPanel()) {
+    <add-point-panel
+        [presetClassLetter]="classLetter()"
+        (closed)="showAddPanel.set(false)"
+        (created)="showAddPanel.set(false)"
+    ></add-point-panel>
+}
+
+<section class="full">
+    <div [classList]="'settingsHeader class' + classLetter().toUpperCase()">
+        <button mat-icon-button (click)="back()">
+            <mat-icon aria-hidden="true" class="material-symbols-rounded">arrow_back</mat-icon>
+        </button>
+        <p>{{ classLetter().toUpperCase() }}</p>
+        @if (auth.isPermitted("point.create")) {
+            <button mat-icon-button (click)="showAddPanel.set(true)">
+                <mat-icon aria-hidden="true" class="material-symbols-rounded">add</mat-icon>
+            </button>
+        }
+    </div>
+
+    @if (isLoading()) {
+        <p class="hint" style="text-align:center">Betöltés...</p>
+    } @else if (points().length === 0) {
+        <section class="full"><p class="hint" style="text-align:center">Még nincs pont rögzítve.</p></section>
+    } @else {
+    <div class="timeline">
+        @for (p of points(); track p.id) {
+            <div class="timeline-item" [class.removed]="p.is_removed">
+                @if(p.created_by) {
+                    <div class="dot"><img src="{{ p.created_by.picture }}"></div>
+                }
+                <div class="entry" [class.removed]="p.is_removed">
+                    <div class="entry-header">
+                        @if (p.created_by) {
+                            <p>{{ p.created_by.name }}</p>
+                        }
+                    <b class="amount" [class.negative]="p.amount < 0">{{ p.amount > 0 ? '+' : '' }}{{ p.amount }} pont</b>
+                    @if (p.is_removed) { <span class="removed-tag">Visszavonva</span> }
+                    @if (auth.isPermitted("point.hidden") && p.is_visible === false) { <span class="hidden-tag">Rejtett</span> }
+                    <span class="entry-date">{{ p.created_at | date:'yyyy. MM. dd. HH:mm' }}</span>
+                </div>
+
+                <p class="source">
+                    @if (p.task_id) {
+                        {{ taskName(p.task_id) }}
+                    } @else {
+                        Egyéni pont
+                    }
+                </p>
+
+                @if (p.details) { <p class="details">{{ p.details }}</p> }
+
+                @if (p.is_removed) {
+                    <p class="removed-details">Visszavonás: {{ p.remove_details }} - {{ p.removed_by!.name }} ({{ p.removed_at | date:'yyyy. MM. dd. HH:mm' }})</p>
+                }
+
+                @if ((auth.isPermitted("point.remove") || (auth.isPermitted("point.create") && (p.created_by?.id || -1) === auth.id())) && !p.is_removed) {
+                    @if (pendingRemove() === p.id) {
+                        <div class="restore-confirm">
+                            <input type="text" placeholder="Indoklás (opcionális)" [(ngModel)]="removeDetails" name="removeDetails_{{p.id}}">
+                            <button class="cancel" (click)="cancelRemove()">Mégse</button>
+                            <button class="confirm" (click)="doRemove(p.id)">Visszavonás</button>
+                        </div>
+                    } @else {
+                        <button class="restore-btn" (click)="confirmRemove(p.id)">
+                            <mat-icon aria-hidden="true" class="material-symbols-rounded">block</mat-icon>
+                            Visszavonás
+                        </button>
+                    }
+                }
+            </div>
+            </div>
+            @if(frozenIndex() === p.id) {
+                <div class="frozen-banner">
+                    <mat-icon class="material-symbols-rounded">pause_circle</mat-icon>
+                    <span>SZÜNETELTETVE — a pontok közlése jelenleg szünetel</span>
+                </div>
+            }
+        }
+    </div>
+    }
+</section>

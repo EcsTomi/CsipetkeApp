@@ -1,0 +1,16 @@
+.chart-wrapper {
+    background: #fff;
+    border-radius: 1rem;
+    padding: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+    width: calc(100% - 2rem);
+}
+.canvas-box {
+    position: relative;
+    height: 320px;
+    width: calc(100% - 0.8rem);
+}
+.hint {
+    color: #777;
+    text-align: center;
+}

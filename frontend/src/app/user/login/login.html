@@ -1,0 +1,11 @@
+<header style="padding-bottom: 0">
+  <img src="logo.png">
+</header>
+<section>
+  <button type="button" (click)="startLogin()">
+    Bejelentkezés Lovassy .edu címmel
+  </button>
+  @if(error()) {
+    <p class="error">{{ error() }}</p>
+  }
+</section>

@@ -1,0 +1,38 @@
+@if (!isLoading()) {
+    @if (showFrozenBanner()) {
+        <div class="frozen-banner">
+            <mat-icon class="material-symbols-rounded">pause_circle</mat-icon>
+            <span>SZÜNETELTETVE — a pontok közlése jelenleg szünetel</span>
+        </div>
+    }
+    @if(auth.isPermittedGroup('point.*')) {
+        <div class="group">
+            @for (letter of classLetters; track letter) {
+                @if(auth.isPermitted('point.summary') || auth.class_letter() === letter) {
+                    <section
+                        [classList]="'class-card class' + letter.toUpperCase() + ((!auth.isPermitted('point.other_class') && !auth.isPermitted('point.summary')) ? ' onlyOne' : '')"
+                        [class.locked]="!canOpen(letter)"
+                        (click)="open(letter)"
+                    >
+                        <h2>{{ letter.toUpperCase() }}</h2>
+                        <b class="points">{{ summaryFor(letter)?.public_amount ?? 0 }}</b>
+                        @if (auth.isPermitted('point.hidden') && (summaryFor(letter)?.hidden_amount || 0) != 0) {
+                            <i class="hint">( + {{ summaryFor(letter)?.hidden_amount }} pont )</i>
+                        }
+                        @if (!canOpen(letter)) {
+                            <p class="hint">Csak az összesítés látható</p>
+                        }
+                    </section>
+                }
+            }
+        </div>
+    }
+
+    @if (auth.isPermitted('costume.score') || auth.isPermitted('costume.edit')) {
+        <button type="button" class="costume-score-link" (click)="openCostumeScore()">
+            <mat-icon aria-hidden="true" class="material-symbols-rounded">diversity_3</mat-icon>
+            <span>Jelmez pontozás</span>
+            <mat-icon aria-hidden="true" class="material-symbols-rounded chevron">chevron_right</mat-icon>
+        </button>
+    }
+}

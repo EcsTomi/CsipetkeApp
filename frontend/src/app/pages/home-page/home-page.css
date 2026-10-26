@@ -1,0 +1,132 @@
+h2.csipetke-today {
+    font-size: 1.6rem;
+    margin: 0;
+    padding: 0;
+    color: var(--csipetke-primary);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    margin-bottom: 1rem;
+    text-align: center;
+    border-width: 2px;
+    border-style: solid;
+    border-image: linear-gradient(to right, #fff, var(--csipetke-primary), #fff) 1;
+    border-radius: 10%;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    padding-bottom: 0.3rem;
+}
+
+h2.csipetke-today.classA {
+    --csipetke-primary: #db2b27;
+}
+h2.csipetke-today.classB {
+    --csipetke-primary: #fec916;
+}
+h2.csipetke-today.classC {
+    --csipetke-primary: #2f6ccb;
+}
+h2.csipetke-today.classD {
+    --csipetke-primary: #63bd41;
+}
+
+.analytics h2 {
+    margin-bottom: 1rem;
+}
+
+.analyticsAlert {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #fdeaea;
+    color: #a33;
+    border: 1px solid #f3c6c6;
+    border-radius: 0.6rem;
+    padding: 0.6rem 0.9rem;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+.analyticsAlert mat-icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.analyticsGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+}
+
+.analyticsCard {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 0.6rem;
+    padding: 0.8rem 1rem;
+    transition: border-color 0.2s ease;
+}
+.analyticsCard.warn {
+    border-color: #a33;
+    background: #fdf3f3;
+}
+
+.analyticsLabel {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #888;
+}
+
+.analyticsValue {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--csipetke-primary);
+    line-height: 1.2;
+}
+.analyticsCard.warn .analyticsValue {
+    color: #a33;
+}
+
+.analyticsUnit {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #888;
+    margin-left: 0.3rem;
+}
+
+.analyticsSub {
+    font-size: 0.78rem;
+    color: #888;
+}
+
+@media (max-width: 480px) {
+    .analyticsGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.userSummary {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: #888;
+}
+.userSummary .totalUsers,
+.userSummary .activeUsers {
+    display: flex;
+    align-items: baseline;
+    gap: 0.3rem;
+}
+.userSummary .count {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--csipetke-primary);
+}
+.userSummary .activeUsers .count {
+    color: #2e8b57; /* zöld, összhangban a userRow .picture.active jelöléssel */
+}

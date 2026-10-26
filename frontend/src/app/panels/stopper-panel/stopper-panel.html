@@ -1,0 +1,16 @@
+<div class="time-left">
+    <div class="sep"></div>
+    <div [class]="minutesD0()"></div>
+    <div [class]="minutesD1()"></div>
+    perc
+    <div [class]="secondsD0()"></div>
+    <div [class]="secondsD1()"></div>
+    mp
+    <div class="sep"></div>
+    @if(remainingMilliseconds() != "-1") {
+        <div [class]="msD0()"></div>
+        <div [class]="msD1()"></div>
+        <div [class]="msD2()"></div>
+        ms
+    }
+</div>

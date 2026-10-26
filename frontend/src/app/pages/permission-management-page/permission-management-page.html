@@ -1,0 +1,161 @@
+@if (selectedUserId()) {
+	<user-permission-panel
+		[userId]="selectedUserId()!"
+		(closed)="closeUserPanel()"
+		(saved)="onUserUpdated()"
+	></user-permission-panel>
+}
+
+<section class="full">
+	<h2 style="text-align: center; margin-top: 0">Jogkezelés</h2>
+
+	<div class="tabBar">
+		<button type="button" [class.active]="tab() === 'roles'" (click)="tab.set('roles')">Szerepkörök</button>
+		<button type="button" [class.active]="tab() === 'users'" (click)="tab.set('users')">Felhasználók</button>
+	</div>
+
+	@if (tab() === 'roles') {
+		<div class="roleLayout">
+			<div class="roleList">
+				@if (rolesLoading()) {
+					<p class="hint">Betöltés...</p>
+				}
+				@for (role of roles().filter((r) => r.code !== 'admin'); track role.code) {
+					<button
+						type="button"
+						class="roleChip"
+						[class.selected]="selectedRoleCode() === role.code"
+						(click)="selectRole(role.code)"
+					>
+						<span class="roleChipName">{{ role.name }}</span>
+						<span class="roleChipCode">{{ role.code }}</span>
+					</button>
+				}
+			</div>
+
+			<div class="rolePermissions">
+				@if (!selectedRoleCode()) {
+					<p class="hint">Válassz egy szerepkört a bal oldali listából.</p>
+				} @else if (roleDetailLoading()) {
+					<p class="hint">Betöltés...</p>
+				} @else {
+					@for (category of groupedPermissions() | keyvalue; track category.key) {
+						<div class="permGroup">
+							<h3>{{ category.key }}</h3>
+							@for (perm of category.value; track perm.code) {
+								
+								
+								<input
+										type="checkbox" id="perm-{{ perm.code }}"
+										[checked]="stagedPermissionCodes().has(perm.code)"
+										(change)="togglePermission(perm.code)"
+									/>
+									<label class="permRow" for="perm-{{ perm.code }}">
+									
+									<span class="permName">{{ perm.name }}</span>
+									@if (perm.description) {
+										<span class="permDesc">{{ perm.description }}</span>
+									}
+								</label>
+							}
+						</div>
+					}
+
+					@if (roleSaveError()) {
+						<p style="color: red">{{ roleSaveError() }}</p>
+					}
+					<div class="btns">
+						<button type="button" class="cancel" mat-icon-button [disabled]="!isRoleDirty()" (click)="resetRole()">
+							<mat-icon class="material-symbols-rounded">undo</mat-icon>
+							Elvetés
+						</button>
+						<button type="button" mat-icon-button [disabled]="!isRoleDirty() || roleSaving()" (click)="saveRole()">
+							<mat-icon class="material-symbols-rounded">save</mat-icon>
+							Mentés
+						</button>
+					</div>
+					
+				}
+			</div>
+		</div>
+		
+	}
+
+	@if (tab() === 'users') {
+		<div class="filters">
+			<div class="g">
+				<label for="uSearch">Keresés</label>
+				<input type="text" [(ngModel)]="filterSearch" name="uSearch" id="uSearch" placeholder="Név vagy e-mail" />
+			</div>
+			<div class="g">
+				<label for="uRole">Szerepkör</label>
+				<select [(ngModel)]="filterRoleCode" name="uRole" id="uRole">
+					<option value="">Összes</option>
+					@for (role of roles(); track role.code) {
+						<option [value]="role.code">{{ role.name }}</option>
+					}
+				</select>
+			</div>
+			<div class="g">
+				<label for="uYear">Évfolyam</label>
+				<input type="number" [(ngModel)]="filterClassYear" name="uYear" id="uYear" placeholder="pl. 25" />
+			</div>
+			<div class="g">
+				<label for="uLetter">Osztály</label>
+				<select [(ngModel)]="filterClassLetter" name="uLetter" id="uLetter">
+					<option value="">Összes</option>
+					<option value="a">A</option>
+					<option value="b">B</option>
+					<option value="c">C</option>
+					<option value="d">D</option>
+				</select>
+			</div>
+			<div class="filterBtns">
+				<button type="button" mat-icon-button (click)="applyUserFilters()">
+					<mat-icon class="material-symbols-rounded">filter_alt</mat-icon>
+					Szűrés
+				</button>
+				<button type="button" class="cancel" mat-icon-button (click)="resetUserFilters()">
+					<mat-icon class="material-symbols-rounded">filter_alt_off</mat-icon>
+					Alaphelyzet
+				</button>
+			</div>
+		</div>
+
+		<div class="userSummary">
+			<div class="activeUsers">
+				<span class="count">{{ userSummary()?.active_count }}</span>
+				munkamenet
+			</div>
+			<span>·</span>
+			<div class="totalUsers">
+				<span class="count">{{ userSummary()?.user_count }}</span>
+				felhasználó
+			</div>
+		</div>
+
+		@if (usersLoading()) {
+			<p class="hint">Betöltés...</p>
+		} @else if (users().length === 0) {
+			<p class="hint">Nincs a szűrésnek megfelelő felhasználó.</p>
+		} @else {
+			<div class="userList">
+				@for (u of users(); track u.id) {
+					<button type="button" class="userRow" [class.blocked]="u.is_blocked" (click)="openUser(u.id)">
+						<span [classList]="'userStatus' + (u.is_active ? ' active' : '')">{{ u.is_active ? u.active_count : '' }}</span>
+						<img src="{{ u.picture }}" [classList]="'picture' + (u.is_active ? ' active' : '')" />
+						<span class="userName">{{ u.name }}</span>
+						<span class="userMeta">{{ u.email }}</span>
+						@if (u.class_year) {
+							<span class="userMeta">{{ u.class_year }}.{{ u.class_letter }}</span>
+						}
+						<span class="userRole">{{ u.role?.name ?? '—' }}</span>
+						@if (u.is_blocked) {
+							<span class="userBlocked">Blokkolva</span>
+						}
+					</button>
+				}
+			</div>
+		}
+	}
+</section>

@@ -1,0 +1,84 @@
+.startStop {
+    height: 10rem;
+    width: 10rem;
+    border-radius: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-size: 1.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 8px;
+    border: none;
+    margin: auto;
+}
+.startStop.stop {
+    background-color: var(--csipetke-primary);
+    color: #fff;
+}
+.startStop.start, .startStop.stop:disabled {
+    background-color: #fff;
+    color: var(--csipetke-primary);
+}
+.reset {
+    border: none;
+    background: #fff;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 8px;
+    border-radius: 1rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.reset:not(:disabled):hover {
+    background-color: var(--csipetke-primary);
+    color: #fff;
+}
+.moreTime {
+    width: 100%;
+    max-width: 200px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    margin: auto;
+}
+.moreTime_btn {
+    border: none;
+    background: #fff;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 8px;
+    border-radius: 1rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.moreTime_btn:not(:disabled):hover {
+    background-color: var(--csipetke-primary);
+    color: #fff;
+}
+.moreTime_btn.bigger {
+    font-size: 2rem;
+    width: 4rem;
+    height: 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.preciseTime {
+    width: 100%;
+    max-width: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    margin: auto;
+    gap: 0.5rem;
+}

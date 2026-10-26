@@ -1,0 +1,35 @@
+h2 {
+    margin: 0.5rem;
+    margin-top: -0.2rem;
+    padding: 0;
+    text-align: center;
+}
+.notActive {
+    opacity: 0.6;
+    background-color: #f0f0f0;
+}
+.small {
+    font-size: 0.8rem;
+}
+section div.group {
+    width: 90%;
+    padding: 0;
+    margin: auto;
+    flex-direction: row;
+    margin-bottom: 1rem;
+}
+img {
+    width: calc(100% / 2 - 1rem);
+    height: 100%;
+    border-radius: 0.5rem;
+    aspect-ratio: 1;
+    object-fit: cover;
+}
+.img_place {
+    width: calc(100% / 2 - 1rem);
+    padding: 0;
+    height: 100%;
+    border-radius: 0.5rem;
+    aspect-ratio: 1;
+    object-fit: cover;
+}

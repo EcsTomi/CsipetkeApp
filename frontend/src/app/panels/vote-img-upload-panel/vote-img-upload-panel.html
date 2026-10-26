@@ -1,0 +1,31 @@
+<div class="upload-zone"
+     [class.drag-over]="dragOver()"
+     (dragover)="onDragOver($event)"
+     (dragleave)="onDragLeave()"
+     (drop)="onDrop($event)">
+
+    @if (uploading()) {
+        <div class="progress-wrap">
+            <mat-icon class="material-symbols-rounded spin">progress_activity</mat-icon>
+        </div>
+    } @else if (image()) {
+        @if (getOptionImageUrl()) {
+            <img [src]="getOptionImageUrl()" class="picture">
+        }
+        <label class="drop-label">
+            <mat-icon class="material-symbols-rounded">upload_file</mat-icon>
+            <p>Húzd ide a fájlt,<br>vagy kattints a tallózáshoz</p>
+            <input type="file" [accept]="accept" (change)="onFileSelected($event)" hidden>
+        </label>
+    } @else {
+        <label class="drop-label">
+            <mat-icon class="material-symbols-rounded">upload_file</mat-icon>
+            <p>Húzd ide a fájlt,<br>vagy kattints a tallózáshoz</p>
+            <input type="file" [accept]="accept" (change)="onFileSelected($event)" hidden>
+        </label>
+    }
+
+    @if (error()) {
+        <p class="upload-error">{{ error() }}</p>
+    }
+</div>

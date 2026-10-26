@@ -1,0 +1,1 @@
+from costume_score.router import router

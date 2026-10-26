@@ -1,0 +1,64 @@
+<div class="upload-zone"
+     [class.drag-over]="dragOver()"
+     (dragover)="onDragOver($event)"
+     (dragleave)="onDragLeave()"
+     (drop)="onDrop($event)">
+
+    @if (uploading()) {
+        <div class="progress-wrap">
+            <mat-icon class="material-symbols-rounded spin">progress_activity</mat-icon>
+        </div>
+    } @else if (submission()) {
+        <div class="submitted">
+            @if(isLateUploaded()) {
+                <mat-icon class="material-symbols-rounded" [style.color]="'red'">assignment_late</mat-icon>
+            } @else {
+                <mat-icon class="material-symbols-rounded">check_circle</mat-icon>
+            }
+            <div class="info">
+                <p>{{ submission()!.original_filename }}</p>
+                <span>{{ formatSize(submission()!.size_bytes) }} · {{ submission()!.uploaded_at | date:'yyyy. MM. dd. HH:mm' }}</span>
+            </div>
+            <div class="btns2">
+                @if(canUpload() && canBeSubmittedFrom() && canBeSubmittedTo()) {
+                    <label class="replace-btn">
+                        Csere
+                        <input type="file" [accept]="accept()" (change)="onFileSelected($event)" hidden>
+                    </label>
+                }
+                @if(!isDownloading()) {
+                    <button (click)="downloadSubmission()" class="replace-btn">
+                        Letöltés
+                    </button>
+                } @else {
+                    <div class="progress-wrap">
+                        <mat-icon class="material-symbols-rounded spin">progress_activity</mat-icon>
+                    </div>
+                }
+            </div>
+        </div>
+    } @else if(canUpload()) {
+        @if(canBeSubmittedFrom() && canBeSubmittedTo()) {
+            <label class="drop-label">
+                <mat-icon class="material-symbols-rounded">upload_file</mat-icon>
+                <p>Húzd ide a fájlt,<br>vagy kattints a tallózáshoz</p>
+                <input type="file" [accept]="accept()" (change)="onFileSelected($event)" hidden>
+            </label>
+        } @else {
+            <label class="drop-label disabled">
+                <mat-icon class="material-symbols-rounded">hourglass_disabled</mat-icon>
+                @if(!canBeSubmittedFrom()) {
+                    <p>Még nem lehet beküldeni.</p>
+                }
+                @if(!canBeSubmittedTo()) {
+                    <p>Lejárt a beküldési határidő.</p>
+                }
+                
+            </label>
+        }
+    }
+
+    @if (error()) {
+        <p class="upload-error">{{ error() }}</p>
+    }
+</div>

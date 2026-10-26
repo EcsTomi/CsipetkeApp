@@ -1,0 +1,40 @@
+@if (isLoading()) {
+    <p class="hint">Betöltés...</p>
+}
+@if (items().length === 0) {
+    <p class="hint">Nincs produkció.</p>
+} @else {
+    <div class="score-scroll">
+        @for (item of items(); track item.id) {
+            @if (item.task === null) {
+                <div class="score-card break-card" [id]="`item-${item.id}`">
+                    <div>
+                        <mat-icon class="material-symbols-rounded">schedule</mat-icon>
+                        <span class="item-name">{{ item.custom_label }}</span>
+                    </div>
+                    @if(item.custom_description) {
+                        <div class="item-description">
+                            @for (d of item.custom_description.split('\n'); track d) {
+                                <span>{{ d }}</span><br>
+                            }
+                        </div>
+                    }
+                </div>
+            } @else {
+                <div class="score-card" [id]="`item-${item.id}`">
+                    <div>
+                        <div class="card-header">
+                            <span class="item-name">
+                                {{ item.task.name }}
+                                @if (item.class_letter) {
+                                    <span [classList]="'class-tag class' + item.class_letter.toUpperCase()">{{ item.class_letter.toUpperCase() }}</span>
+                                }
+                            </span>
+                        </div>
+                    </div>
+                    <div class="item-description" [innerHTML]="item.task!.details | safeHtml"></div>
+                </div>
+            }
+        }
+    </div>
+}

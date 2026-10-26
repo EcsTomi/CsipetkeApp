@@ -1,0 +1,83 @@
+@if(!winningClass()) {
+    <section>
+        @if(isVisible(csipetkeDay) && !stepped()) {
+            <h2 style="text-align: center">A Csipetkéig hátralévő idő:</h2>
+            <time-left-panel [datetime]="csipetkeDay" (zero)="stepped.set(true)"></time-left-panel>
+        } @else {
+            <h2 class="csipetke-today">Hajrá Csipetkék!</h2>
+        }
+    </section>
+} @else {
+    <section>
+        @if(winningClass() == "a") {
+            <h2 [classList]="'csipetke-today class' + winningClass()?.toUpperCase()">Gratulálunk az {{ winningClass()?.toUpperCase() }} osztálynak!</h2>
+        } @else {
+            <h2 [classList]="'csipetke-today class' + winningClass()?.toUpperCase()">Gratulálunk a {{ winningClass()?.toUpperCase() }} osztálynak!</h2>
+        }
+    </section>
+}
+@if(auth.is_contestant() && deadlines().length > 0) {
+    <section>
+        <h2 style="text-align: center">Határidők!</h2>
+        @for (deadlineTask of deadlines(); track deadlineTask.id) {
+            <div style="display: block; margin: auto;">
+                <h3 style="text-align: center; margin-bottom: 0">{{ deadlineTask.name.replace("Tánc", "Tánc zenéje (ha megvágjátok)") }}</h3> <time-left-panel [datetime]="deadlineTask.deadline!"></time-left-panel>
+            </div>
+        }
+    </section>
+}
+@if(auth.is_admin()) {
+    <section class="analytics">
+        <h2 style="text-align: center">Rendszerállapot</h2>
+
+        @if (analytics()?.queue_full) {
+            <div class="analyticsAlert">
+                <mat-icon class="material-symbols-rounded">warning</mat-icon>
+                A rendszer jelenleg túlterhelt — a kérések sorba állnak.
+            </div>
+        }
+        <div class="userSummary">
+			<div class="activeUsers">
+				<span class="count">{{ userSummary()?.active_count }}</span>
+				munkamenet
+			</div>
+			<span>·</span>
+			<div class="totalUsers">
+				<span class="count">{{ userSummary()?.user_count }}</span>
+				felhasználó
+			</div>
+		</div>
+        <div class="analyticsGrid">
+            <div class="analyticsCard">
+                <span class="analyticsLabel">Admin/jury sáv</span>
+                <span class="analyticsValue">
+                    {{ analytics()?.admin_available }}<span class="analyticsUnit">szabad</span>
+                </span>
+                <span class="analyticsSub">{{ analytics()?.admin_waiting }} várakozó</span>
+            </div>
+
+            <div class="analyticsCard">
+                <span class="analyticsLabel">Általános sáv</span>
+                <span class="analyticsValue">
+                    {{ analytics()?.general_available }}<span class="analyticsUnit">szabad</span>
+                </span>
+                <span class="analyticsSub">{{ analytics()?.general_waiting }} várakozó</span>
+            </div>
+            <br>
+            <div class="analyticsCard">
+                <span class="analyticsLabel">Kérések / (20 mp)</span>
+                <span class="analyticsValue">{{ analytics()?.requests_last_minute }}</span>
+                <span class="analyticsSub">{{ analytics()?.anonim_requests_last_minute }} anonim</span>
+            </div>
+
+            <div class="analyticsCard" [class.warn]="(analytics()?.currently_blocked_users ?? 0) > 0">
+                <span class="analyticsLabel">Blokkolt felhasználók</span>
+                <span class="analyticsValue">{{ analytics()?.currently_blocked_users }}</span>
+                <span class="analyticsSub">rate-limit miatt</span>
+            </div>
+        </div>
+    </section>
+}
+@if (auth.isPermitted("archive.view")) {
+    <archive-gallery></archive-gallery>
+}

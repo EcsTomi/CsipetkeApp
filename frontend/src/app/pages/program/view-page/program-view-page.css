@@ -1,0 +1,189 @@
+.score-scroll {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-height: calc(100vh - 250px);
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    padding: 1rem 0.2rem;
+    margin: 0;
+    margin-bottom: -150px;
+}
+
+.score-card {
+    scroll-snap-align: center;
+    background: #fafafa;
+    border-radius: 1rem;
+    padding: 1rem 1.2rem;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 8px;
+    transition: all 0.2s ease;
+}
+.score-card.is-current {
+    background: #fff;
+    box-shadow: rgba(49, 61, 143, 0.25) 0px 4px 16px;
+    border: 1.5px solid var(--csipetke-primary);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.8rem;
+    flex-wrap: wrap;
+}
+.item-name {
+    font-weight: 700;
+    font-size: 1.05rem;
+}
+.class-tag {
+    font-size: 0.75rem;
+    border-radius: 0.4rem;
+    padding: 0.1rem 0.4rem;
+    margin-left: 0.4rem;
+}
+.current-tag {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    background: var(--csipetke-primary);
+    color: #fff;
+    padding: 0.15rem 0.5rem;
+    border-radius: 1rem;
+    margin-left: auto;
+}
+
+.disabled-row {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #999;
+    font-size: 0.9rem;
+    background: #f0f0f0;
+    border-radius: 0.6rem;
+    padding: 0.6rem 0.8rem;
+}
+
+.window-notice {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(150, 0, 0, 0.08);
+    color: #a33;
+    border-radius: 0.6rem;
+    padding: 0.6rem 0.9rem;
+    margin-bottom: 0.8rem;
+    font-size: 0.9rem;
+}
+
+.score-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+.score-buttons button {
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 50%;
+    border: 1.5px solid var(--csipetke-primary);
+    background: #fff;
+    color: var(--csipetke-primary);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.score-buttons button.selected {
+    background: var(--csipetke-primary);
+    color: #fff;
+}
+.score-buttons button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.jury-scoring input[type="range"] {
+    accent-color: var(--csipetke-primary);
+}
+.slider-value {
+    display: block;
+    text-align: center;
+    margin-top: 0.3rem;
+    font-weight: 700;
+    color: var(--csipetke-primary);
+}
+
+.organizer-scoring {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    align-items: flex-end;
+}
+.class-select {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+.class-select label {
+    font-size: 0.75rem;
+    color: #888;
+    font-weight: 600;
+}
+.class-select select {
+    padding: 0.4rem 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ccc;
+}
+.save-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: var(--csipetke-primary);
+    color: #fff;
+    border: none;
+    border-radius: 0.6rem;
+    padding: 0.5rem 0.9rem;
+    cursor: pointer;
+    margin-left: auto;
+    transition: opacity 0.2s ease;
+}
+.save-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+.break-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    background: repeating-linear-gradient(
+        45deg,
+        #f0f0f0,
+        #f0f0f0 10px,
+        #e8e8e8 10px,
+        #e8e8e8 20px
+    );
+    color: #777;
+    font-weight: 600;
+    padding: 0.8rem 1.2rem;
+}
+.break-card div:not(.item-description) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
+}
+.item-description {
+    display: block;
+    overflow: hidden;
+    white-space: normal;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+    width: calc(100% - 0.8rem);
+    margin: auto;
+    text-align: center;
+}
+.break-card.is-current {
+    border: 1.5px solid var(--csipetke-primary);
+    color: var(--csipetke-primary);
+}
+select {
+    width: 80px;
+}

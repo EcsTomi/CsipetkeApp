@@ -1,0 +1,145 @@
+<section class="full">
+    <div class="settingsHeader">
+        <p>Program tervezés</p>
+        <button type="button" mat-icon-button (click)="openAddBreak()">
+            <mat-icon class="material-symbols-rounded">schedule</mat-icon>
+        </button>
+        <button type="button" mat-icon-button (click)="openAddPanel()">
+            <mat-icon class="material-symbols-rounded">add</mat-icon>
+        </button>
+    </div>
+
+    @if (isLoading()) {
+        <p class="hint">Betöltés...</p>
+    } 
+    @if (items().length === 0) {
+        <p class="hint">Még nincs egy program-elem sem.</p>
+    } @else {
+        <div class="order-list" cdkDropList (cdkDropListDropped)="drop($event)">
+            @for (item of items(); track item.id) {
+                <div class="order-item" cdkDrag [class.is-break]="item.task === null">
+                    <div>
+                        <mat-icon class="material-symbols-rounded drag-handle" cdkDragHandle>drag_indicator</mat-icon>
+
+                        <span class="item-label">
+                            @if (item.task === null) {
+                                <mat-icon class="material-symbols-rounded break-icon">schedule</mat-icon>
+                            }
+                            {{ item.task?.name ?? item.custom_label ?? '' }}
+                            <span class="class-tag" [classList]="'class-tag class' + item.class_letter.toUpperCase()" *ngIf="item.class_letter">{{ item.class_letter.toUpperCase() }}</span>
+                        </span>
+                        @if (item.task) {
+                            <span class="scoring-tag" [class]="'tag-' + item.task.scoring_type">
+                                {{ item.task.scoring_type === 'jury' ? 'Zsűri' : 'Szervező' }}
+                            </span>
+                        }
+
+                        @if (pendingDelete() === item.id) {
+                            <div class="delete-confirm">
+                                <button type="button" class="cancel" (click)="cancelDelete()">Mégse</button>
+                                <button type="button" class="confirm" (click)="doDelete(item.id)">Törlés</button>
+                            </div>
+                        } @else {
+                            @if(!item.task) {
+                                <button type="button" class="edit-btn" (click)="openEditPanel(item)">
+                                    <mat-icon class="material-symbols-rounded">edit</mat-icon>
+                                </button>
+                            }
+                            <button type="button" class="delete-btn" (click)="confirmDelete(item.id)">
+                                <mat-icon class="material-symbols-rounded">delete</mat-icon>
+                            </button>
+                        }
+                    </div>
+                    @if(item.custom_description) {
+                        <div class="item-description">
+                            @for (d of item.custom_description.split('\n'); track d) {
+                                <span>{{ d }}</span><br>
+                            }
+                        </div>
+                    }
+                </div>
+                
+            }
+        </div>
+    }
+</section>
+
+@if (showAddPanel()) {
+    <div class="history-overlay" (click)="closeAddPanel()">
+        <div class="history-panel small" (click)="$event.stopPropagation()">
+            <div class="settingsHeader">
+                <p>Feladat hozzáadása</p>
+                <button mat-icon-button (click)="closeAddPanel()" aria-label="Bezárás">
+                    <mat-icon class="material-symbols-rounded">close</mat-icon>
+                </button>
+            </div>
+            <div class="history-body">
+                <label for="taskSelect">Feladat</label>
+                <select id="taskSelect" [(ngModel)]="selectedTaskId" name="taskSelect">
+                    <option [ngValue]="null">Válassz...</option>
+                    @for (t of availableTasks(); track t.id) {
+                        <option [ngValue]="t.id">{{ t.name }}</option>
+                    }
+                </select>
+
+                <br>
+                <button type="button" class="btn" mat-icon-button [disabled]="!selectedTaskId()" (click)="confirmAdd()">
+                    <mat-icon class="material-symbols-rounded">add</mat-icon>
+                    Hozzáadás
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+@if (showAddBreak()) {
+    <div class="history-overlay" (click)="closeAddBreak()">
+        <div class="history-panel small" (click)="$event.stopPropagation()">
+            <div class="settingsHeader">
+                <p>Szünet hozzáadása</p>
+                <button mat-icon-button (click)="closeAddBreak()" aria-label="Bezárás">
+                    <mat-icon class="material-symbols-rounded">close</mat-icon>
+                </button>
+            </div>
+            <div class="history-body">
+                <label for="breakLabel">Elnevezés</label>
+                <input type="text" [(ngModel)]="breakLabel" name="breakLabel" id="breakLabel" placeholder="pl. Technikai szünet">
+
+                <label for="breakDescription">Leírás</label>
+                <textarea [(ngModel)]="breakDescription" name="breakDescription" id="breakDescription" placeholder="pl. A kivetítőn indítsátok el a ..."></textarea>
+                
+                <br><br>
+                <button type="button" class="btn" mat-icon-button [disabled]="!breakLabel().trim()" (click)="confirmAddBreak()">
+                    <mat-icon class="material-symbols-rounded">add</mat-icon>
+                    Hozzáadás
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+@if (showEditPanel()) {
+    <div class="history-overlay" (click)="closeEditPanel()">
+        <div class="history-panel small" (click)="$event.stopPropagation()">
+            <div class="settingsHeader">
+                <p>Szünet szerkesztése</p>
+                <button mat-icon-button (click)="closeEditPanel()" aria-label="Bezárás">
+                    <mat-icon class="material-symbols-rounded">close</mat-icon>
+                </button>
+            </div>
+            <div class="history-body">
+                <label for="editName">Szünet neve</label>
+                <input type="text" [(ngModel)]="modifyName" name="editName" id="editName" placeholder="pl. Technikai szünet">
+
+                <label for="editDescription">Leírás</label>
+                <textarea [(ngModel)]="modifyDescription" name="editDescription" id="editDescription" placeholder="pl. A kivetítőn indítsátok el a ..."></textarea>
+                
+                <br><br>
+                <button type="button" class="btn" mat-icon-button [disabled]="!modifyName().trim()" (click)="confirmEdit()">
+                    <mat-icon class="material-symbols-rounded">edit</mat-icon>
+                    Modosítás
+                </button>
+            </div>
+        </div>
+    </div>
+}

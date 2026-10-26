@@ -1,0 +1,211 @@
+/* costume-score-page.css */
+.totals-row {
+    display: flex;
+    gap: 0.8rem;
+    margin: 1rem 0 1.5rem;
+    flex-wrap: wrap;
+    widtH: calc(100% - 0.8rem);
+}
+.total-card {
+    flex: 1;
+    min-width: 100px;
+    border-radius: 0.8rem;
+    padding: 0.8rem;
+    text-align: center;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 8px;
+}
+.total-letter {
+    display: block;
+    font-weight: 700;
+    color: white;
+    font-size: 0.9rem;
+}
+.total-value {
+    display: block;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: white;
+}
+
+.safetyhidden {
+    opacity: 0.5;
+}
+
+.overlay {
+    margin-top: -7rem;
+    z-index: 5;
+    margin-left: -0.5rem;
+    width: calc(100% + 2rem);
+    max-width: none;
+    backdrop-filter: blur(3px);
+}
+.overlay h3 {
+    text-align: center;
+    width: 100%;
+}
+
+.totals-row button {
+    margin: 1rem auto;
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    font-size: 1.2rem;
+    border: 1px solid #1a6b1a;
+    background: #1a6b1a;
+    color: white;
+    border-radius: 0.6rem;
+    padding: 0.8rem 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.totals-row button:hover {
+    background: #fff;
+    color: #1a6b1a;
+}
+.totals-row button.hide {
+    background: #555;
+    border-color: #555;
+    color: #ccc;
+}
+.totals-row button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.score-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    width: calc(100% - 0.8rem);
+}
+.score-entry {
+    background: #fafafa;
+    border-radius: 0.8rem;
+    padding: 0.7rem 1rem;
+    width: calc(100% - 0.8rem - 1.4rem);
+}
+.score-entry.removed {
+    opacity: 0.6;
+    background: #f3f3f3;
+}
+
+.score-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+.score-class {
+    font-weight: 800;
+    font-size: 1.1rem;
+}
+.score-sum {
+    font-weight: 700;
+    color: #1a6b1a;
+}
+.score-sum.negative {
+    color: #a33;
+}
+.removed-tag {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    background: #a33;
+    color: #fff;
+    padding: 0.1rem 0.5rem;
+    border-radius: 1rem;
+}
+.score-date {
+    margin-left: auto;
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.score-breakdown {
+    margin: 0.4rem 0 0;
+    font-size: 0.9rem;
+    color: #555;
+}
+.score-note {
+    margin: 0.3rem 0 0;
+    font-size: 0.85rem;
+    font-style: italic;
+    color: #666;
+}
+.score-author {
+    margin: 0.3rem 0 0;
+    font-size: 0.8rem;
+    color: #888;
+}
+.score-remove-details {
+    margin: 0.3rem 0 0;
+    font-size: 0.8rem;
+    color: #a33;
+}
+
+.score-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.6rem;
+}
+.edit-btn, .remove-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    border: 1px solid #ccc;
+    background: transparent;
+    border-radius: 0.5rem;
+    padding: 0.25rem 0.6rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.edit-btn:hover {
+    background: var(--csipetke-primary);
+    border-color: var(--csipetke-primary);
+    color: #fff;
+}
+.remove-btn {
+    border-color: #a33;
+    color: #a33;
+}
+.remove-btn:hover {
+    background: #a33;
+    color: #fff;
+}
+.edit-btn mat-icon, .remove-btn mat-icon {
+    font-size: 1rem;
+    width: 1rem;
+    height: 1rem;
+}
+
+.remove-confirm {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.6rem;
+    flex-wrap: wrap;
+}
+.remove-confirm input {
+    flex: 1;
+    min-width: 150px;
+    padding: 0.3rem 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 0.4rem;
+    font-size: 0.8rem;
+}
+.remove-confirm button {
+    border: none;
+    border-radius: 0.4rem;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+.remove-confirm .cancel {
+    background: #eee;
+}
+.remove-confirm .confirm {
+    background: #a33;
+    color: #fff;
+}

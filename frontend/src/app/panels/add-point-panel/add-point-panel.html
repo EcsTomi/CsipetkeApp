@@ -1,0 +1,76 @@
+<div class="history-overlay" (click)="close()">
+    <div class="history-panel add-point-panel" (click)="$event.stopPropagation()">
+        <form autocomplete="off" class="full" (keydown.enter)="$event.preventDefault()" (submit)="$event.preventDefault()">
+            <div class="settingsHeader">
+                <p>Pont hozzáadása</p>
+                <button mat-icon-button (click)="close()" aria-label="Bezárás">
+                    <mat-icon class="material-symbols-rounded">close</mat-icon>
+                </button>
+            </div>
+
+            <div class="history-body">
+                @if (!presetClassLetter()) {
+                    <label for="class_letter">Osztály</label>
+                    <select id="class_letter"
+                        [formField]="pointForm.classLetter"
+                        [class.invalid]="pointForm.classLetter().invalid() && pointForm.classLetter().touched()">
+                        <option value="a">A</option>
+                        <option value="b">B</option>
+                        <option value="c">C</option>
+                        <option value="d">D</option>
+                    </select>
+                    @if(pointForm.classLetter().invalid() && pointForm.classLetter().errors().length) {
+                        <p class="field-error">{{ pointForm.classLetter().errors()[0].message }}</p>
+                    }
+                } @else {
+                    <p class="hint">Osztály: <b>{{ presetClassLetter()!.toUpperCase() }}</b></p>
+                }
+
+                @if (!presetTaskId()) {
+                    <label for="task">Feladat (opcionális)</label>
+                    <select id="task" [formField]="pointForm.taskId" 
+                        [class.invalid]="pointForm.taskId().invalid() && pointForm.taskId().touched()">
+                        <option value="">– Egyéni pont (nincs feladathoz kötve) –</option>
+                        @for (t of tasks(); track t.id) {
+                            <option [value]="t.id">{{ t.name }}</option>
+                        }
+                    </select>
+                    @if(pointForm.taskId().invalid() && pointForm.taskId().errors().length) {
+                        <p class="field-error">{{ pointForm.taskId().errors()[0].message }}</p>
+                    }
+                } @else {
+                    <p class="hint">Feladat: <b>{{ tasks().find(t => t.id === presetTaskId())?.name }}</b></p>
+                }
+
+                <label for="amount">Pontszám <span class="hint">(negatív érték = levonás)</span></label>
+                <input type="number" id="amount"
+                    [formField]="pointForm.amount"
+                    [class.invalid]="pointForm.amount().invalid() && pointForm.amount().touched()"
+                    placeholder="pl. 25" step="1">
+                @if(pointForm.amount().invalid() && pointForm.amount().errors().length) {
+                    <p class="field-error">{{ pointForm.amount().errors()[0].message }}</p>
+                }
+
+                <label for="details">Megjegyzés</label>
+                <textarea id="details" 
+                    [formField]="pointForm.details"
+                    [class.invalid]="pointForm.details().invalid() && pointForm.details().touched()"
+                    rows="3" style="min-height: 50px;" placeholder="Indoklás, megjegyzés..."></textarea>
+                @if(pointForm.details().invalid() && pointForm.details().errors().length) {
+                    <p class="field-error">{{ pointForm.details().errors()[0].message }}</p>
+                }
+
+                @if (error()) {
+                    <p style="color:red">{{ error() }}</p>
+                }
+
+                <div class="btns">
+                    <button mat-icon-button [disabled]="submitting()" (click)="submit()">
+                        <mat-icon aria-hidden="true" class="material-symbols-rounded">add</mat-icon>
+                        Hozzáadás
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
